@@ -1,9 +1,8 @@
-# UNSW CompClub 2019 Summer CTF Server
+# CSESoc Scavhunt
 ---
 
 ![UNSW CSE CompClub Logo](site/assets/img/compclub.logo.svg)
 A CTF frontend designed for UNSW's [CSE CompClub 2019 Summer](//summer2019.compclub.com.au) Security Workshop  
-[Demo](//featherbear.github.io/UNSW-CompClub2019Summer-CTF)
 
 ---
 ## Installation
@@ -67,8 +66,6 @@ Edit the SQLite entry for the user in the `users` table.
 
 ---
 ## License
-Copyright © 2018 - 2019 Andrew Wong  
-
 This software is licensed under the MIT License.  
 You are free to redistribute it and/or modify it under the terms of the license.  
 
