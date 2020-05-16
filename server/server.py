@@ -1,36 +1,28 @@
-__VERSION = "0.0.3"
-# github.com/featherbear/UNSW-CompClub2019Summer-CTF
-
-# print("TODO")
-# print("- Concurrent SQLCursors")
+__VERSION = "0.0.0"
 
 import tornado.ioloop
 import tornado.web
-
+import os
 from lib import database
 from lib.api import APIHandler
 from lib.site import SSEHandler, SSE_messages, SiteHandler
 
 app = tornado.web.Application([
-    ("/api/v1/(.*)", APIHandler),
-    ("/orchestrator", SSEHandler),
-    ("/(.*)", SiteHandler),
-],
-    cookie_secret="5206677",
+        ("/api/(.*)", APIHandler),
+        ("/orchestrator", SSEHandler),
+        ("/(.*)", SiteHandler),
+    ],
+    cookie_secret="5206688",
     login_url="/invite"
 )
 
 if database.conn is not None:
-    import lib.auth
+    import lib
 
     lib.auth.initDatabase()
 
-    import lib.authSession
-
     lib.authSession.initDatabase()
     lib.authSession.cleanup()
-
-    import lib.ctf
 
     lib.ctf.initDatabase()
 
@@ -39,8 +31,6 @@ else:
 
 
 def run(file: str = None, **kwargs):
-    print("UNSW CSE CompClub 2019 Summer CTF Server")
-    print("                      [ by Andrew Wong ]")
     print("----------------------------------------")
     print("Server version:", __VERSION)
 
@@ -57,9 +47,21 @@ def run(file: str = None, **kwargs):
         config.update(kwargs)
     print("----------------------------------------")
 
-    server = tornado.httpserver.HTTPServer(app)
+    try:
+        settings = dict(
+            ssl_options = {
+                "certfile": os.path.join("/etc/letsencrypt/live/lab0.tech/fullchain.pem"),
+                "keyfile": os.path.join("/etc/letsencrypt/live/lab0.tech/privkey.pem"),
+        }
+        )
+        server = tornado.httpserver.HTTPServer(app, **settings)
 
-    port = config["SERVER"].get("port", 8000)
+        port = config["SERVER"].get("port", 443)
+    except:
+        # Unable to run on HTTPS
+        server = tornado.httpserver.HTTPServer(app)
+        port = config["SERVER"].get("port", 80)
+    
     try:
         server.bind(port)
     except OSError:
