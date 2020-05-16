@@ -1,7 +1,7 @@
 const __updateDelay = 3;
 
 (fetchLeaderboard = (cb_object, cb_array) => {
-  fetch("/api/ctf/leaderboard.json", {
+  fetch("/api/questions/leaderboard.json", {
     method: "post",
     credentials: "include"
   })

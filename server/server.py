@@ -24,7 +24,7 @@ if database.conn is not None:
     lib.authSession.initDatabase()
     lib.authSession.cleanup()
 
-    lib.ctf.initDatabase()
+    lib.questions.initDatabase()
 
 else:
     raise Exception("Cannot create the database connection.")

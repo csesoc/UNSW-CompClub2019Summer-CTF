@@ -1,28 +1,28 @@
 from .. import routing, JSON
 from tornado.web import authenticated, RequestHandler
-
-from ...ctf import SQLMethod as ctfSQLMethod
-from ...auth import SQLMethod as authSQLMethod
 from sqlite3 import IntegrityError
-from ...site import SSE_messages
+
+from lib.questions import SQLMethod as questionsSQLMethod
+from lib.auth import SQLMethod as authSQLMethod
+from lib.site import SSE_messages
 
 
-@routing.POST("/ctf/questions.json")
+@routing.POST("/questions/questions.json")
 @authenticated
 def questions(self: RequestHandler, args: dict):
-    self.finish(JSON.data(ctfSQLMethod.questions.getQuestions()))
+    self.finish(JSON.data(questionsSQLMethod.questions.getQuestions()))
 
 
-@routing.POST("/ctf/categories.json")
+@routing.POST("/questions/categories.json")
 @authenticated
 def categories(self: RequestHandler, args: dict):
-    self.finish(JSON.data(ctfSQLMethod.categories.getCategories()))
+    self.finish(JSON.data(questionsSQLMethod.categories.getCategories()))
 
 
-@routing.POST("/ctf/leaderboard.json")
+@routing.POST("/questions/leaderboard.json")
 def leaderboard(self: RequestHandler, args: dict):
-    questionsSQL = ctfSQLMethod.questions.getQuestions()
-    solvesSQL = ctfSQLMethod.questions.getSolves()
+    questionsSQL = questionsSQLMethod.questions.getQuestions()
+    solvesSQL = questionsSQLMethod.questions.getSolves()
     usersSQL = authSQLMethod.getUsers()
 
     pointsMap = {}
@@ -42,33 +42,47 @@ def leaderboard(self: RequestHandler, args: dict):
     return self.finish(JSON.data(leaderboard))
 
 
-@routing.POST("/ctf/adminSolves.json")
+@routing.POST("/questions/adminSolves.json")
+@authenticated
+def adminSolves(self: RequestHandler, args: dict):
+    return self.finish(JSON.data(questionsSQLMethod.questions.getSolves()))
+
+
+@routing.POST("/questions/userSolves.json")
 @authenticated
 def userSolves(self: RequestHandler, args: dict):
-    return self.finish(JSON.data(ctfSQLMethod.questions.getSolves()))
+    return self.finish(JSON.data(questionsSQLMethod.questions.getSolves(user=self.current_user.id)))
 
 
-@routing.POST("/ctf/userSolves.json")
-@authenticated
-def userSolves(self: RequestHandler, args: dict):
-    return self.finish(JSON.data(ctfSQLMethod.questions.getSolves(user=self.current_user.id)))
-
-
-@routing.POST("/ctf/questionSolves.json")
+@routing.POST("/questions/questionSolves.json")
 @authenticated
 def questionSolves(self: RequestHandler, args: dict):
-    return self.finish(JSON.data(len(ctfSQLMethod.questions.getSolves(question=args["question"]))))
+    return self.finish(JSON.data(len(questionsSQLMethod.questions.getSolves(question=args["question"]))))
 
 
-@routing.POST("/ctf/solve")
+@routing.POST("/questions/userPoints.json")
+def userPoints(self: RequestHandler, args: dict):
+    questionsSQL = questionsSQLMethod.questions.getQuestions()
+    solvesSQL = questionsSQLMethod.questions.getSolves(user=self.current_user.id)
+
+    pointsMap = {}
+    for question in questionsSQL:
+        pointsMap[question[0]] = question[3]
+
+    points = 0
+    for solve in solvesSQL:
+        points += pointsMap[solve[1]]
+    
+    return self.finish(JSON.data(points))
+
+
+@routing.POST("/questions/solve")
 @authenticated
 def trySolve(self: RequestHandler, args: dict):
-    if args["flag"] == ctfSQLMethod.questions.getFlag(args["question"]):
+    if args["answer"].lower() == questionsSQLMethod.questions.getAnswer(args["question"]):
         try:
-            ctfSQLMethod.questions.solveQuestion(
-                self.current_user.id, args["question"])
-            SSE_messages.addMessage(
-                self.current_user.name + " has found a flag!")
+            questionsSQLMethod.questions.solveQuestion(self.current_user.id, args["question"])
+            SSE_messages.addMessage(self.current_user.username + " has found an answer!")
         except IntegrityError:
             pass
         return self.finish(JSON.YES())
