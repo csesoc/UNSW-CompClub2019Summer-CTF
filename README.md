@@ -1,18 +1,26 @@
 # CSESoc Scavhunt
 ---
 
-![UNSW CSE CompClub Logo](site/assets/img/compclub.logo.svg)
-A CTF frontend designed for UNSW's [CSE CompClub 2019 Summer](//summer2019.compclub.com.au) Security Workshop  
+![UNSW CSESoc Logo](site/assets/img/csesocgreyblue.png)
+[Original repo](https://github.com/featherbear/UNSW-CompClub2019Summer-CTF)
 
 ---
 ## Installation
 A [_requirements.txt_](server/requirements.txt) file is located in the _server_ folder  
-`pip install -r requirements.txt`
+`python3 -m pip install -r requirements.txt`
 
 ## Run
 ```bash
+python3 -m pip install -r requirements.txt
 cd server
-python server.py
+python3 server.py
+```
+
+## Run on Server
+```bash
+cd server
+sudo lsof -t -i tcp:443 -s tcp:listen | sudo xargs kill
+sudo nohup python3 server.py &
 ```
 
 ## Configuration File
@@ -20,8 +28,8 @@ When the server first runs, a `settings.ini` file will be automatically created 
 
 ```ini
 [SERVER]
-port = 8000              # Port to listen on
-database = data.sqlite3  # SQLite database file 
+port = 443               # Port to listen on
+database = data.sqlite3 # SQLite database file 
 
 [SITE]
 templatesDir = ../site  # Jinja template base path
@@ -32,18 +40,10 @@ username = admin        # Superuser username
 password = password     # Superuser password
 ```
 
-## Admin users
-There is no user account management interface (_yet_).  
-Edit the SQLite entry for the user in the `users` table.  
-
-## Customisation
-
-* To modify the invite page background, replace `site/invite/background.jpg`  
-* For most other page modifications, edit `site/template.html`
-
 ---
-
 ## Credits
+
+This was originally created by Andrew Wong for the CSESoc Compclub 2019 Summer CTF.
 
 ### Server (Python)
 [`Jinja2`](http://jinja.pocoo.org) - _Version 2.10.1_  
@@ -68,5 +68,3 @@ Edit the SQLite entry for the user in the `users` table.
 ## License
 This software is licensed under the MIT License.  
 You are free to redistribute it and/or modify it under the terms of the license.  
-
-For more details see the _LICENSE_ file
