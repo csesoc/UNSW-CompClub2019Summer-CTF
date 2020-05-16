@@ -111,7 +111,7 @@ div.background svg g.mouseArea path {
 }
 
 .slideout [name="score"]:not(:empty)::before {
-  content: "score: ";
+  content: "points: ";
 }
 
 .navbar {
