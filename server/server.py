@@ -50,8 +50,8 @@ def run(file: str = None, **kwargs):
     try:
         settings = dict(
             ssl_options = {
-                "certfile": os.path.join("/etc/letsencrypt/live/lab0.tech/fullchain.pem"),
-                "keyfile": os.path.join("/etc/letsencrypt/live/lab0.tech/privkey.pem"),
+                "certfile": os.path.join("/etc/letsencrypt/live/scavhunt.tech/fullchain.pem"),
+                "keyfile": os.path.join("/etc/letsencrypt/live/scavhunt.tech/privkey.pem"),
         }
         )
         server = tornado.httpserver.HTTPServer(app, **settings)
