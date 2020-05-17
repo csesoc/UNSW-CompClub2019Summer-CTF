@@ -625,36 +625,6 @@ function openModalEditSubmission(submissionId, srcElem) {
     modal.querySelector("input[type=range]").value = submission.value;
   }
 
-  const updateAnswerEvent = function(evt) {
-    if (answerInput.reportValidity()) {
-      this.removeEventListener("click", updateAnswerEvent);
-      this.classList.add("is-loading");
-      /*
-      fetch("/api/questions/question/editAnswer", {
-        method: "post",
-        credentials: "include",
-        body: JSON.stringify({
-          question: questionId,
-          answer: answerInput.value
-        })
-      })
-        .then(response => response.json())
-        .then(jsonData => {
-          this.addEventListener("click", updateAnswerEvent);
-          this.classList.remove("is-loading");
-          if (jsonData.status) {
-            let answerColumn = srcElem.querySelector(".answer");
-            if (!answerColumn.children.length) {
-              answerColumn.innerText = answerInput.value;
-            }
-            answerInput.value = "";
-          }
-        });*/
-      this.addEventListener("click", updateAnswerEvent);
-      this.classList.remove("is-loading");
-    }
-  };
-
   const confirmEvent = function(evt) {
     if (modal.querySelector("form").reportValidity()) {
       modal
@@ -662,16 +632,19 @@ function openModalEditSubmission(submissionId, srcElem) {
         .removeEventListener("click", confirmEvent);
       this.classList.add("is-loading");
 
-      let endpoint = isNew ? "submit" : "edit";
+      let endpoint = isNew ? "add" : "edit";
       let data = {
-        question: submissionId,
         title: modal.querySelector("[name=title]").value,
-        category: modal.querySelector("[name=category]").value,
         description: modal.querySelector("[name=description]").value,
-        value: modal.querySelector("[name=value]").value || 100
+        value: modal.querySelector("[name=value]").value || 100,
+        category: modal.querySelector("[name=category]").value
       };
 
-      /*fetch("/api/questions/question/" + endpoint, {
+      if (!isNew) {
+        data.question = submissionId;
+      }
+
+      fetch("/api/questions/special/" + endpoint, {
         method: "post",
         credentials: "include",
         body: JSON.stringify(data)
@@ -683,12 +656,7 @@ function openModalEditSubmission(submissionId, srcElem) {
             .querySelector("button.confirm")
             .addEventListener("click", confirmEvent);
           location.reload();
-        });*/
-      this.classList.remove("is-loading");
-      modal
-        .querySelector("button.confirm")
-        .addEventListener("click", confirmEvent);
-      location.reload();
+        });
     }
   };
 
