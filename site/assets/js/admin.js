@@ -434,7 +434,6 @@ function openModalEditCategory(catId) {
   modal.classList.add("is-active");
 }
 
-
 function openModalDeleteCategory(catId) {
   let modal = document.getElementById("deleteModalCategory");
 
@@ -488,12 +487,11 @@ function openModalDeleteCategory(catId) {
   modal.classList.add("is-active");
 }
 
-
 function openModalDeleteQuestion(question) {
   let modal = document.getElementById("deleteModalQuestion");
 
   const text = document.getElementById("delete-question-text");
-  text.innerText = `You are trying to delete ${questions[question]}.`;
+  text.innerText = `You are trying to delete ${questions[question].title}.`;
 
   const confirmEventQuestion = function(evt) {
     modal
@@ -541,7 +539,6 @@ function openModalDeleteQuestion(question) {
 
   modal.classList.add("is-active");
 }
-
 
 function openModalDeleteUser(userId, username) {
   let modal = document.getElementById("deleteModalUser");
