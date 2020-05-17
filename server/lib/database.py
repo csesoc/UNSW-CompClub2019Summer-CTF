@@ -5,12 +5,12 @@ from .config import config
 
 
 def assertSQLResult(result):
-    result = all(result)
-    if result:
-        database.conn.commit()
+    outcome = result[-1]
+    if outcome:
+        conn.commit()
     else:
-        database.conn.rollback()
-    return result
+        conn.rollback()
+    return outcome
 
 
 def create_connection(db_file):

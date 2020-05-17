@@ -163,6 +163,32 @@ function dataToRow(data) {
   edit.appendChild(editBtn);
   row.appendChild(edit);
 
+  let deleteElem = document.createElement("td");
+  let deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "delete";
+  deleteBtn.classList.add("button", "is-outlined", "is-info");
+  deleteElem.appendChild(deleteBtn);
+  row.appendChild(deleteElem);
+
+  const deleteClick = function () {
+    deleteBtn.removeEventListener("click", deleteClick);
+    this.classList.add("is-loading");
+    fetch("/api/questions/question/delete", {
+      method: "post",
+      credentials: "include",
+      body: JSON.stringify({
+        question: data.id
+      })
+    })
+    .then(response => response.json())
+    .then(jsonData => {
+      if (jsonData.status) {
+        this.classList.remove("is-loading");
+        location.reload();
+      }
+    })
+  }
+
   const answerRevealClickEvent = function() {
     answerReveal.removeEventListener("click", answerRevealClickEvent);
     this.classList.add("is-loading");
@@ -186,6 +212,8 @@ function dataToRow(data) {
   editBtn.addEventListener("click", function(evt) {
     openModalEdit(data.id, this.parentElement.parentElement);
   });
+  deleteBtn.addEventListener("click", deleteClick);
+
 
   return row;
 }
@@ -216,6 +244,34 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin()]).then(
         editBtn.classList.add("button", "is-outlined", "is-info");
         edit.appendChild(editBtn);
         row.appendChild(edit);
+        
+      let deleteElem = document.createElement("td");
+      let deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "delete";
+      deleteBtn.classList.add("button", "is-outlined", "is-info");
+      deleteElem.appendChild(deleteBtn);
+      row.appendChild(deleteElem);
+
+      const deleteClick = function () {
+        deleteBtn.removeEventListener("click", deleteClick);
+        this.classList.add("is-loading");
+        fetch("/api/questions/category/delete", {
+          method: "post",
+          credentials: "include",
+          body: JSON.stringify({
+            catId: data[0]
+          })
+        })
+        .then(response => response.json())
+        .then(jsonData => {
+          if (jsonData.status) {
+            this.classList.remove("is-loading");
+            location.reload();
+          } else {
+            console.log(jsonData);
+          }
+        })
+      }
 
         document
         .querySelector("[name=categories]")
@@ -224,6 +280,7 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin()]).then(
         editBtn.addEventListener("click", function(evt) {
           openModalEditCategory(data[0]);
         });
+        deleteBtn.addEventListener("click", deleteClick)
       }
     }
 

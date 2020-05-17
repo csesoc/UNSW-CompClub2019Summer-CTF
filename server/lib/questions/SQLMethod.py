@@ -92,5 +92,5 @@ class SQLMethod:
                 SQLQuery.categories.deleteCategoryQuestions, (catId,), commit=False))
             result.append(database.update(
                 SQLQuery.categories.deleteCategory, (catId,), commit=False))
-            
+            print(result)
             return database.assertSQLResult(result)
