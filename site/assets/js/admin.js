@@ -274,40 +274,98 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).the
     }
 
     if (usersData.status) {
-      const users = document.querySelector("[name=users]")
-      for (let data of usersData.data || []) {
-        const row = document.createElement("tr");
 
-        const username = document.createElement("td");
-        username.innerText = data[1];
-        row.appendChild(username);
+      usersData.data.sort((next, prev) => {
+        if (next[1] > prev[1]) {
+          return -1;
+        } else if (next[1] < prev[1]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
 
-        const points = document.createElement("td");
-        points.innerText = data[2];
-        row.appendChild(points);
+      prepareUsers(usersData.data);
 
-        const solves = document.createElement("td");
-        solves.innerText = data[3];
-        row.appendChild(solves);
-
-        let deleteElem = document.createElement("td");
-        let deleteBtn = document.createElement("button");
-        deleteBtn.innerText = "delete";
-        deleteBtn.classList.add("button", "is-outlined", "is-info");
-        deleteElem.appendChild(deleteBtn);
-        row.appendChild(deleteElem);
-
-        deleteBtn.addEventListener("click", function(evt) {
-          openModalDeleteUser(data[0], data[1])
-        })
-
-        users.appendChild(row);
-      }
-    } else {
+      document.getElementById("sort").addEventListener("change", function() {
+        if (!this.value) {
+          prepareUsers(usersData.data);
+        }
+        let [key, sortDsc] = this.value.split("_");
+        if (key === "username") {
+          usersData.data.sort((next, prev) => {
+            if (next[1] > prev[1]) {
+              return sortDsc === "desc" ? -1 : 1;
+            } else if (next[1] < prev[1]) {
+              return sortDsc === "desc" ? 1 : -1;
+            } else {
+              return 0;
+            }
+          });
+        } else if (key == "points") {
+          usersData.data.sort((next, prev) => {
+            if (next[2] > prev[2]) {
+              return sortDsc === "desc" ? -1 : 1;
+            } else if (next[2] < prev[2]) {
+              return sortDsc === "desc" ? 1 : -1;
+            } else {
+              return 0;
+            }
+          });
+        } else {
+          // key === "solves"
+          usersData.data.sort((next, prev) => {
+            if (next[3] > prev[3]) {
+              return sortDsc === "desc" ? -1 : 1;
+            } else if (next[3] < prev[3]) {
+              return sortDsc === "desc" ? 1 : -1;
+            } else {
+              return 0;
+            }
+          });
+        }
+        prepareUsers(usersData.data);
+      });
     }
+
   }
 );
 
+function prepareUsers(usersData) {
+  const users = document.querySelector("[name=users]");
+  while (users.firstChild) {
+    users.removeChild(users.lastChild);
+  }
+
+  for (let data of usersData || []) {
+    const row = document.createElement("tr");
+
+    const username = document.createElement("td");
+    username.innerText = data[1];
+    row.appendChild(username);
+
+    const points = document.createElement("td");
+    points.innerText = data[2];
+    row.appendChild(points);
+
+    const solves = document.createElement("td");
+    solves.innerText = data[3];
+    row.appendChild(solves);
+
+    let deleteElem = document.createElement("td");
+    let deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "delete";
+    deleteBtn.classList.add("button", "is-outlined", "is-info");
+    deleteElem.appendChild(deleteBtn);
+    row.appendChild(deleteElem);
+
+    deleteBtn.addEventListener("click", function(evt) {
+      openModalDeleteUser(data[0], data[1])
+    })
+
+    users.appendChild(row);
+  }
+}
 
 function openModalEditCategory(catId) {
   let modal = document.getElementById("editModalCategory");
