@@ -45,6 +45,8 @@ password = password     # Superuser password
 
 This was originally created by Andrew Wong for the CSESoc Compclub 2019 Summer CTF.
 
+It has been modified by Michael Gribben for CSESoc's Scavhunt.
+
 ---
 ## License
 This software is licensed under the MIT License.  

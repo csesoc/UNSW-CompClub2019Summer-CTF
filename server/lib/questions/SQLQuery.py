@@ -187,9 +187,6 @@ class SQLQuery:
 
     
     class users:
-
-        # solves.getUserAcount
-        # also get points
         getAllUsers = """
             SELECT id, username
             FROM users
@@ -201,6 +198,7 @@ class SQLQuery:
             where user = ?
             ;
             """
+            
         deleteUser = """
             DELETE FROM users
             WHERE id = ?

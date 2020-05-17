@@ -98,6 +98,7 @@ def categoryDelete(self: RequestHandler, args: dict):
         return self.finish(JSON.OK())
     return self.finish(JSON.FALSE())
 
+
 @routing.POST("/questions/users/getAll")
 @authenticated
 def usersGetAll(self: RequestHandler, args: dict):
