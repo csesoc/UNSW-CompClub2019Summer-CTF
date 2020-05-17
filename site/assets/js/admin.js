@@ -197,7 +197,6 @@ function dataToRow(data) {
     openModalDeleteQuestion(data.id);
   });
 
-
   return row;
 }
 
@@ -274,7 +273,6 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).the
     }
 
     if (usersData.status) {
-
       usersData.data.sort((next, prev) => {
         if (next[1] > prev[1]) {
           return -1;
