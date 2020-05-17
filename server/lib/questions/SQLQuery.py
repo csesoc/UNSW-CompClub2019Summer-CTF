@@ -4,8 +4,8 @@ class SQLQuery:
             CREATE TABLE IF NOT EXISTS solves (
                 user INTEGER NOT NULL,
                 question INTEGER NOT NULL,
-                approved INTEGER DEFAULT 1,
                 answer TEXT DEFAULT NULL,
+                approved INTEGER DEFAULT 1,
                 FOREIGN KEY (user) REFERENCES users (id),
                 FOREIGN KEY (question) REFERENCES questions (id),
                 UNIQUE (user, question)
@@ -32,7 +32,7 @@ class SQLQuery:
             """
 
         getAll = """
-            SELECT *
+            SELECT question, solves
             FROM solves
             WHERE approved = 1
             ;
@@ -41,14 +41,42 @@ class SQLQuery:
         getUser = """
             SELECT question
             FROM solves
-            WHERE user = ? and approved = 1
+            WHERE user = ? AND approved = 1
             ;
             """
 
         getQuestion = """
             SELECT user
             FROM solves
-            WHERE question = ? and approved = 1
+            WHERE question = ? AND approved = 1
+            ;
+            """
+        
+        approve = """
+            UPDATE solves
+            SET approved = 1
+            WHERE user = ? AND question = ?
+            ;
+            """
+        
+        addUnapproved = """
+            INSERT
+            INTO solves (user, question, answer, approved)
+            VALUES (?, ?, ?, 1)
+            ;
+            """
+        
+        getQuestionNull = """
+            SELECT user, question
+            FROM solves
+            WHERE answer is NULL
+            ;
+            """
+        
+        getQuestionNotNull = """
+            SELECT *
+            FROM solves
+            WHERE answer is NOT NULL
             ;
             """
     
@@ -62,14 +90,14 @@ class SQLQuery:
                 value INTEGER NOT NULL,
                 category INTEGER NOT NULL,
                 type INTEGER DEFAULT 0,
-                FOREIGN KEY (category) REFERENCES questions (title)
+                FOREIGN KEY (category) REFERENCES categories (id)
             );
             """
 
         add = """
             INSERT
             INTO questions (title, description, answer, value, category)
-            VALUES (?, ?, LOWER(?), ?, LOWER(?))
+            VALUES (?, ?, LOWER(?), ?, ?)
             ;
             """
         
@@ -87,7 +115,7 @@ class SQLQuery:
 
         edit = """
             UPDATE questions
-            SET title = ?, description = ?, value = ?, category = LOWER(?)
+            SET title = ?, description = ?, value = ?, category = ?
             WHERE id = ?
             ;
             """
@@ -102,6 +130,7 @@ class SQLQuery:
         getAll = """
             SELECT id, title, description, value, category
             FROM questions
+            WHERE type = 0
             ;
             """
         
@@ -115,6 +144,7 @@ class SQLQuery:
         getAllWithAnswer = """
             SELECT id, title, description, answer, value, category
             FROM questions
+            WHERE type = 0
             ;
             """
         
@@ -130,6 +160,32 @@ class SQLQuery:
             FROM questions
             WHERE id = ?
             ;
+            """
+        
+        addSpecial = """
+            INSERT
+            INTO questions (title, description, value, category, type)
+            VALUES (?, ?, ?, ?, 1)
+            ;
+            """
+        
+        editSpecial = """
+            UPDATE questions
+            SET title = ?, description = ?, value = ?, category = ?)
+            WHERE id = ?
+            ;
+            """
+        
+        genAllSpecial = """
+            SELECT id, title, description, value, category
+            FROM questions
+            WHERE type = 1
+            """
+        
+        genOneSpecial = """
+            SELECT id, title, description, value, category
+            FROM questions
+            WHERE id = ? AND type = 1
             """
 
     class categories:
