@@ -4,6 +4,15 @@ import sqlite3
 from .config import config
 
 
+def assertSQLResult(result):
+    result = all(result)
+    if result:
+        database.conn.commit()
+    else:
+        database.conn.rollback()
+    return result
+
+
 def create_connection(db_file):
     try:
         conn = sqlite3.connect(db_file, check_same_thread=False)
