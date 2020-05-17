@@ -55,7 +55,7 @@ function getSolvesAdmin() {
   }).then(response => response.json());
 }
 
-function getSolves(questionId, getAll) {
+function getSolves(questionId) {
   if (questionId !== undefined) {
     return fetch("/api/questions/questionSolves.json", {
       method: "post",

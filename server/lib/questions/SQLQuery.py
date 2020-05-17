@@ -4,6 +4,8 @@ class SQLQuery:
             CREATE TABLE IF NOT EXISTS solves (
                 user INTEGER NOT NULL,
                 question INTEGER NOT NULL,
+                approved INTEGER DEFAULT 1,
+                answer TEXT DEFAULT NULL,
                 FOREIGN KEY (user) REFERENCES users (id),
                 FOREIGN KEY (question) REFERENCES questions (id),
                 UNIQUE (user, question)
@@ -32,27 +34,21 @@ class SQLQuery:
         getAll = """
             SELECT *
             FROM solves
+            WHERE approved = 1
             ;
             """
 
         getUser = """
             SELECT question
             FROM solves
-            WHERE user = ?
-            ;
-            """
-        
-        getUserCount = """
-            SELECT COUNT(question)
-            FROM solves
-            WHERE user = ?
+            WHERE user = ? and approved = 1
             ;
             """
 
         getQuestion = """
             SELECT user
             FROM solves
-            WHERE question = ?
+            WHERE question = ? and approved = 1
             ;
             """
     
@@ -62,9 +58,10 @@ class SQLQuery:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 description TEXT,
-                answer TEXT NOT NULL,
+                answer TEXT DEFAULT NULL,
                 value INTEGER NOT NULL,
                 category INTEGER NOT NULL,
+                type INTEGER DEFAULT 0,
                 FOREIGN KEY (category) REFERENCES questions (title)
             );
             """

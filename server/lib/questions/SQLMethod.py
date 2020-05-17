@@ -107,10 +107,11 @@ class SQLMethod:
                     pointsMap[question[0]] = question[3]
                 
                 points = 0
+                solves = 0
                 for solve in solvesSQL:
                     points += pointsMap[solve]
+                    solves += 1
 
-                solves = database.fetchOne(SQLQuery.solves.getUserCount, (user[0],))[0]
                 users[i] = (user[0], user[1], points, solves)
             return users
         
