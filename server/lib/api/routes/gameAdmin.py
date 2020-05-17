@@ -117,3 +117,73 @@ def usersDelete(self: RequestHandler, args: dict):
     if result:
         return self.finish(JSON.OK())
     return self.finish(JSON.FALSE())
+
+@routing.POST("/questions/special/approve")
+@authenticated
+def questionsSpecialApprove(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    result = questionsSQLMethod.questions.approveSolve(**args)
+    if result:
+        return self.finish(JSON.OK())
+    return self.finish(JSON.FALSE())
+
+@routing.POST("/questions/special/unapprove")
+@authenticated
+def questionsSpecialUnapprove(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    result = questionsSQLMethod.questions.unapproveSolve(**args)
+    if result:
+        return self.finish(JSON.OK())
+    return self.finish(JSON.FALSE())
+
+@routing.POST("/questions/normal")
+@authenticated
+def questionsNormal(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    return self.finish(JSON.data(questionsSQLMethod.questions.getQuestionsNormal()))
+
+@routing.POST("/questions/special")
+@authenticated
+def questionsSpecial(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    return self.finish(JSON.data(questionsSQLMethod.questions.getQuestionsSpecial()))
+
+@routing.POST("/questions/special/add")
+@authenticated
+def questionsSpecialAdd(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    return self.finish(JSON.data(questionsSQLMethod.questions.addSpecial(**args)))
+
+@routing.POST("/questions/special/edit")
+@authenticated
+def questionsSpecialEdit(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    return self.finish(JSON.data(questionsSQLMethod.questions.editSpecial(**args)))
+
+@routing.POST("/questions/special/all")
+@authenticated
+def questionsSpecialAll(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    return self.finish(JSON.data(questionsSQLMethod.questions.genAllSpecial(**args)))
+
+@routing.POST("/questions/special/one")
+@authenticated
+def questionsSpecialOne(self: RequestHandler, args: dict):
+    if not self.current_user.isAdmin:
+        return self.finish(JSON.error("access denied"))
+
+    return self.finish(JSON.data(questionsSQLMethod.questions.genOneSpecial(**args)))

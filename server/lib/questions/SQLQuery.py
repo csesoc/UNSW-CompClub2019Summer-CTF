@@ -59,6 +59,13 @@ class SQLQuery:
             ;
             """
         
+        unapprove = """
+            UPDATE solves
+            SET approved = 0
+            WHERE user = ? AND question = ?
+            ;
+            """
+        
         addUnapproved = """
             INSERT
             INTO solves (user, question, answer, approved)
@@ -66,14 +73,14 @@ class SQLQuery:
             ;
             """
         
-        getQuestionNull = """
+        getQuestionsNull = """
             SELECT user, question
             FROM solves
             WHERE answer is NULL
             ;
             """
         
-        getQuestionNotNull = """
+        getQuestionsNotNull = """
             SELECT *
             FROM solves
             WHERE answer is NOT NULL

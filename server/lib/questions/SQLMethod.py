@@ -9,6 +9,10 @@ class SQLMethod:
         def solveQuestion(user: int, question: int):
             return database.insert(SQLQuery.solves.add, (user, question))
 
+        @staticmethod
+        def addUnapproved(user: int, question: int, answer: str):
+            return database.insert(SQLQuery.solves.addUnapproved, (user, question, answer))
+
         # Admin functions
         @staticmethod
         def unsolveQuestion(user: int, question: int):
@@ -40,6 +44,39 @@ class SQLMethod:
         @staticmethod
         def deleteUser(user: int):
             return database.update(SQLQuery.solves.deleteUser, (user,))
+        
+        @staticmethod
+        def approveSolve(user: int, question: int):
+            return database.update(SQLQuery.solves.approve, (user, question))
+
+        @staticmethod
+        def unapproveSolve(user: int, question: int):
+            return database.update(SQLQuery.solves.unapprove, (user, question))
+        
+        @staticmethod
+        def getQuestionsNormal():
+            return database.fetchAll(SQLQuery.solves.getQuestionsNull)
+
+        @staticmethod
+        def getQuestionsSpecial():
+            return database.fetchAll(SQLQuery.solves.getQuestionsNotNull)
+        
+        @staticmethod
+        def addSpecial(title: str, description: str, value: int, category: int):
+            return database.insert(SQLQuery.questions.addSpecial, (title, description, value, category))
+        
+        @staticmethod
+        def editSpecial(title: str, description: str, value: int, category: int, question: int):
+            return database.update(SQLQuery.questions.editSpecial, (title, description, value, category, question))
+
+        @staticmethod
+        def genAllSpecial():
+            return database.fetchAll(SQLQuery.questions.genAllSpecial)
+        
+        @staticmethod
+        def genOneSpecial(question: int):
+            return database.fetchOne(SQLQuery.questions.genOneSpecial, (question,))
+
 
         # Helper functions
         @staticmethod

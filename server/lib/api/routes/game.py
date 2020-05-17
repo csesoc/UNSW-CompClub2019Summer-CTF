@@ -85,3 +85,12 @@ def trySolve(self: RequestHandler, args: dict):
             pass
         return self.finish(JSON.YES())
     return self.finish(JSON.NO())
+
+@routing.POST("/questions/special/solve")
+@authenticated
+def submitSpecial(self: RequestHandler, args: dict):
+    result = questionsSQLMethod.questions.addUnapproved(self.current_user.id, args["question"], args["answer"])
+    if result:
+        SSE_messages.addMessage(self.current_user.username + " has found an answer!")
+        return self.finish(JSON.YES())
+    return self.finish(JSON.NO())
