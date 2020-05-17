@@ -32,7 +32,7 @@ class SQLQuery:
             """
 
         getAll = """
-            SELECT question, solves
+            SELECT user, question
             FROM solves
             WHERE approved = 1
             ;
