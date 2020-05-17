@@ -5,6 +5,43 @@
 {% endblock %}
 {% block content %}
 
+<div class="modal deleteModal"id = "deleteModalCategory">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title has-text-light">Category Delete</p>
+    </header>
+    <section class="modal-card-body">
+      <p class="has-text-light" id="delete-category-text"></P>
+      <p class="has-text-light">Are you sure you want to delete this category?</p>
+      <p class="has-text-light">This cannot be undone.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success confirm">Delete</button>
+      <button class="button cancel">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+
+<div class="modal deleteModal" id ="deleteModalQuestion">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title has-text-light">Question Delete</p>
+    </header>
+    <section class="modal-card-body">
+      <p class="has-text-light" id="delete-question-text"></P>
+      <p class="has-text-light">Are you sure you want to delete this question?</p>
+      <p class="has-text-light">This cannot be undone.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success confirm">Delete</button>
+      <button class="button cancel">Cancel</button>
+    </footer>
+  </div>
+</div>
+
 
 <div id="editModalCategory" class="modal">
   <div class="modal-background"></div>
