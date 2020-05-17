@@ -210,12 +210,12 @@ function dataToRow(data) {
   return row;
 }
 
-Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).then(
-  ([questionsData, categoriesData, solvesData, usersData]) => {
+Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers(), getSubmissions()]).then(
+  ([questionsData, categoriesData, solvesData, usersData, submissionsData]) => {
     let modal = document.getElementById("editModal");
     let categoryElem = modal.querySelector("select");
     let modalSubmission = document.getElementById("editModalSubmission");
-    let modalCategoryElem = modalSubmission.querySelector("select");
+    let modalSubmissionElem = modalSubmission.querySelector("select");
 
     if (categoriesData.status) {
       for (let data of categoriesData.data || []) {
@@ -225,7 +225,11 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).the
         option.value = data[0];
         option.innerText = data[1];
         categoryElem.appendChild(option);
-        modalCategoryElem.appendChild(option);
+
+        let submissionOption= document.createElement("option");
+        submissionOption.value = data[0];
+        submissionOption.innerText = data[1];
+        modalSubmissionElem.appendChild(submissionOption);
 
         const row = document.createElement("tr");
         
@@ -339,6 +343,24 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).the
       });
     }
 
+    if (submissionsData.status) {
+      for (let data of submissionsData.data || []) {
+        submissions[data[0]] = {
+          id: data[0],
+          title: data[1],
+          description: data[2],
+          value: data[3],
+          category: data[4]
+        };
+        if (!submissionsByCategory.hasOwnProperty(data[4])) {
+          submissionsByCategory[data[4]] = [];
+          submissionsByCategory[data[4]].push(data[0]);
+        }
+        document
+          .querySelector("[name=submissions]")
+          .appendChild(dataToRowCategory(submissions[data[0]]));
+      }
+    }
   }
 );
 
@@ -376,6 +398,51 @@ function prepareUsers(usersData) {
 
     users.appendChild(row);
   }
+}
+
+function dataToRowCategory(data) {
+  let row = document.createElement("tr");
+  row.name = "question-" + data.id;
+
+  let title = document.createElement("td");
+  title.innerText = data.title;
+  row.appendChild(title);
+
+  let category = document.createElement("td");
+  category.innerText = categories[data.category] || "";
+  row.appendChild(category);
+
+  let points = document.createElement("td");
+  points.innerText = data.value;
+  row.appendChild(points);
+
+  let solveCount = document.createElement("td");
+  solveCount.innerText = (solves[data.id] || []).length;
+  row.appendChild(solveCount);
+
+  let edit = document.createElement("td");
+  let editBtn = document.createElement("button");
+  editBtn.innerText = "edit";
+  editBtn.classList.add("button", "is-outlined", "is-info");
+  edit.appendChild(editBtn);
+  row.appendChild(edit);
+
+  let deleteElem = document.createElement("td");
+  let deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "delete";
+  deleteBtn.classList.add("button", "is-outlined", "is-info");
+  deleteElem.appendChild(deleteBtn);
+  row.appendChild(deleteElem);
+
+  /*answerReveal.addEventListener("click", answerRevealClickEvent);
+  editBtn.addEventListener("click", function(evt) {
+    openModalEdit(data.id, this.parentElement.parentElement);
+  });
+  deleteBtn.addEventListener("click", function(evt) {
+    openModalDeleteQuestion(data.id);
+  });*/
+
+  return row;
 }
 
 function openModalEditCategory(catId) {

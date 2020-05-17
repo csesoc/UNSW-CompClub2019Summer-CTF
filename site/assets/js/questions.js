@@ -1,5 +1,7 @@
 let questions = {};
 let questionsByCategory = {};
+let submissions = {}
+let submissionsByCategory = {}
 let categories = {};
 let solves = [];
 let me = {};
@@ -92,6 +94,13 @@ function trySolve(questionId, answer) {
 
 function getUsers() {
   return fetch("/api/questions/users/getAll", {
+    method: "post",
+    credentials: "include"
+  }).then(response => response.json());
+}
+
+function getSubmissions() {
+  return fetch("/api/questions/special/all", {
     method: "post",
     credentials: "include"
   }).then(response => response.json());

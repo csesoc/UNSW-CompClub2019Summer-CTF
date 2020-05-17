@@ -187,12 +187,14 @@ class SQLQuery:
             SELECT id, title, description, value, category
             FROM questions
             WHERE type = 1
+            ;
             """
         
         genOneSpecial = """
             SELECT id, title, description, value, category
             FROM questions
             WHERE id = ? AND type = 1
+            ;
             """
 
     class categories:
