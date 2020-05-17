@@ -128,6 +128,72 @@
   margin: 0;
 }
 
+#editModalSubmission .modal-card > * {
+  border: 2px solid rgba(22, 131, 155, 0.5);
+}
+
+#editModalSubmission .modal-card header,
+#editModalSubmission .modal-card footer {
+  background-color: rgba(22, 131, 155, 0.5);
+}
+
+#editModalSubmission .modal-card section {
+  background-color: rgba(11, 126, 152, 0.22);
+}
+
+#editModalSubmission textarea[name="description"] {
+  resize: none;
+}
+
+#editModalSubmission .modal-card-title::before {
+  content: "Submission";
+}
+
+#editModalSubmission.editQuestion .modal-card-title::after {
+  content: "\00a0 Edit";
+}
+
+#editModalSubmission .modal-card-title::after {
+  content: "\00a0 Create";
+}
+
+#editModalSubmission:not(.editQuestion) form p {
+  margin-right: 0;
+}
+
+#editModalSubmission:not(.editQuestion) form a.button {
+  display: none;
+}
+
+#editModalSubmission .valueField {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+#editModalSubmission [name="value"] {
+  width: 100px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+#editModalSubmission select {
+  background-color: #133945 !important;
+}
+
+#editModalSubmission.editQuestion .modal-card-foot button.confirm::before {
+  content: "Save";
+}
+
+#editModalSubmission .modal-card-foot button.confirm::before {
+  content: "Create";
+}
+
+#editModalSubmission input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 .deleteModal .modal-card > * {
   border: 2px solid rgba(22, 131, 155, 0.5);
 }

@@ -186,6 +186,84 @@
 </div>
 
 
+<div id="editModalSubmission" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title has-text-light"></p>
+    </header>
+    <section class="modal-card-body">
+      <form>
+        <div class="field">
+          <label class="label has-text-light">Title</label>
+          <div class="control">
+            <input
+              class="input blueBox has-text-light"
+              name="title"
+              type="text"
+              spellcheck="true"
+              placeholder="Title"
+              required
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label has-text-light">Category</label>
+          <div class="control">
+            <div class="select">
+              <select
+                name="category"
+                class="blueBox has-text-light"
+                required
+              ></select>
+            </div>
+          </div>
+        </div>
+        <div class="field is-grouped">
+          <div class="field valueField">
+            <label class="label has-text-light">Value</label>
+            <div class="control">
+              <div class="field is-grouped">
+                <input
+                  name="value"
+                  class="input blueBox has-text-light"
+                  type="number"
+                  min="0"
+                  value="100"
+                />
+                <input
+                  class="slider is-fullwidth is-small is-circle"
+                  step="1"
+                  min="0"
+                  max="200"
+                  value="100"
+                  type="range"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label has-text-light">Description</label>
+          <div class="control">
+            <textarea
+              class="textarea blueBox has-text-light"
+              name="description"
+              placeholder="Description"
+            ></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success confirm"></button>
+      <button class="button cancel">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+
 <div class="container is-centered" style="margin-right: 25vw; width: 70vw;">
   <div style="margin-top: 25px;"></div>
   <h2 class="title has-text-white has-text-centered">Categories</h2>
@@ -237,6 +315,34 @@
     <tbody>
       <tr onclick="openModalEdit()">
         <td colspan="7">Add new question</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 class="title has-text-white has-text-centered">Submissions</h2>
+  <table class="table is-fullwidth" name="questions">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Points</th>
+        <th>Solves</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Points</th>
+        <th>Solves</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr onclick="openModalEditSubmission()">
+        <td colspan="6">Add new submission</td>
       </tr>
     </tbody>
   </table>
