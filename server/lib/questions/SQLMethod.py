@@ -97,7 +97,22 @@ class SQLMethod:
     class users:
         @staticmethod
         def getAllUsers():
-            return database.fetchAll(SQLQuery.users.getAllUsers)
+            users = database.fetchAll(SQLQuery.users.getAllUsers)
+            for i, user in enumerate(users):
+                questionsSQL = SQLMethod.questions.getQuestions()
+                solvesSQL = SQLMethod.questions.getSolves(user=user[0])
+
+                pointsMap = {}
+                for question in questionsSQL:
+                    pointsMap[question[0]] = question[3]
+                
+                points = 0
+                for solve in solvesSQL:
+                    points += pointsMap[solve]
+
+                solves = database.fetchOne(SQLQuery.solves.getUserCount, (user[0],))[0]
+                users[i] = (user[0], user[1], points, solves)
+            return users
         
         @staticmethod
         def deleteUser(userId: int):

@@ -282,6 +282,14 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).the
         username.innerText = data[1];
         row.appendChild(username);
 
+        const points = document.createElement("td");
+        points.innerText = data[2];
+        row.appendChild(points);
+
+        const solves = document.createElement("td");
+        solves.innerText = data[3];
+        row.appendChild(solves);
+
         let deleteElem = document.createElement("td");
         let deleteBtn = document.createElement("button");
         deleteBtn.innerText = "delete";
