@@ -105,15 +105,8 @@ div.background svg g.mouseArea path {
   content: "/";
 }
 
-.slideout [name="score"]:not(:empty)::before {
-  content: "points: ";
-}
-
 .navbar {
   z-index: 40 !important;
-}
-
-.navbar [name="mouseCoordinates"] {
 }
 
 .navbar [name="mouseCoordinates"] [name="mouseX"]:not(:empty)::before {

@@ -9,13 +9,15 @@
         scoreData.push({
           id: dataId,
           name: data.name,
-          points: data.points
+          points: data.points,
+          solves: data.solves
         });
       }
       scoreData.sort((next, prev) => prev.points - next.points);
 
       let myRank;
       let myScore;
+      let mySolves;
 
       let leaderboard = [];
 
@@ -33,6 +35,7 @@
 
         if (me.id === parseInt(scoreData[i].id)) {
           myScore = scoreData[i].points;
+          mySolves = scoreData[i].solves;
           myRank = rank;
         }
 
@@ -42,12 +45,12 @@
       document.querySelector(
         "div.slideout [name=leaderboard]"
       ).innerText = leaderboard.join("\n");
-      document.querySelector("div.slideout [name=rank]").innerText =
-        myRank || "-";
-      document.querySelector("div.slideout [name=places]").innerText =
-        scoreData.length || "-";
-      document.querySelector("div.slideout [name=score]").innerText =
-        myScore || "-";
+      document.querySelector("div.slideout [name=rank]")
+        .innerText = myRank || "-";
+      document.querySelector("div.slideout [name=places]")
+        .innerText = scoreData.length || "-";
+      document.querySelector("div.slideout [name=score-solves]")
+        .innerText = `score: ${myScore || "-"}\nsolves: ${mySolves || "-"}`;
 
       callbackTrue && callbackTrue(jsonData);
     }

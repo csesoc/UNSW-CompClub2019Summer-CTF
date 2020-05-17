@@ -25,21 +25,19 @@ def leaderboard(self: RequestHandler, args: dict):
     solvesSQL = questionsSQLMethod.questions.getSolves()
     usersSQL = authSQLMethod.getUsers()
 
-    pointsMap = {}
+    points = {}
     for question in questionsSQL:
-        pointsMap[question[0]] = question[3]
+        points[question[0]] = question[3]
 
-    leaderboard = {}
+    board = {}
     for user in usersSQL:
-        leaderboard[user[0]] = dict(name=user[2] or user[1],  # user might not have a display name?
-                                    points=0)
+        board[user[0]] = dict(name=user[1], points=0, solves=0)
 
     for solve in solvesSQL:
-        try:
-            leaderboard[solve[0]]["points"] += pointsMap[solve[1]]
-        except:
-            pass
-    return self.finish(JSON.data(leaderboard))
+        board[solve[0]]["points"] += points[solve[1]]
+        board[solve[0]]["solves"] += 1
+    
+    return self.finish(JSON.data(board))
 
 
 @routing.POST("/questions/adminSolves.json")
