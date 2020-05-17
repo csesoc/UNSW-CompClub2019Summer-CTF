@@ -41,6 +41,13 @@ class SQLQuery:
             WHERE user = ?
             ;
             """
+        
+        getUserCount = """
+            SELECT COUNT(question)
+            FROM solves
+            WHERE user = ?
+            ;
+            """
 
         getQuestion = """
             SELECT user
@@ -175,5 +182,27 @@ class SQLQuery:
         getAll = """
             SELECT id, category
             FROM categories
+            ;
+            """
+
+    
+    class users:
+
+        # solves.getUserAcount
+        # also get points
+        getAllUsers = """
+            SELECT id, username
+            FROM users
+            ;
+            """
+
+        deleteUserSolves = """
+            DELETE FROM solves
+            where user = ?
+            ;
+            """
+        deleteUser = """
+            DELETE FROM users
+            WHERE id = ?
             ;
             """

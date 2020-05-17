@@ -201,8 +201,8 @@ function dataToRow(data) {
   return row;
 }
 
-Promise.all([getQuestions(), getCategories(), getSolvesAdmin()]).then(
-  ([questionsData, categoriesData, solvesData]) => {
+Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers()]).then(
+  ([questionsData, categoriesData, solvesData, usersData]) => {
     let modal = document.getElementById("editModal");
     let categoryElem = modal.querySelector("select");
 
@@ -271,6 +271,31 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin()]).then(
           .querySelector("[name=questions]")
           .appendChild(dataToRow(questions[data[0]]));
       }
+    }
+
+    if (usersData.status) {
+      const users = document.querySelector("[name=users]")
+      for (let data of usersData.data || []) {
+        const row = document.createElement("tr");
+
+        const username = document.createElement("td");
+        username.innerText = data[1];
+        row.appendChild(username);
+
+        let deleteElem = document.createElement("td");
+        let deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "delete";
+        deleteBtn.classList.add("button", "is-outlined", "is-info");
+        deleteElem.appendChild(deleteBtn);
+        row.appendChild(deleteElem);
+
+        deleteBtn.addEventListener("click", function(evt) {
+          openModalDeleteUser(data[0], data[1])
+        })
+
+        users.appendChild(row);
+      }
+    } else {
     }
   }
 );
@@ -449,6 +474,60 @@ function openModalDeleteQuestion(question) {
   modal
     .querySelector(".modal-background")
     .addEventListener("click", cancelEventQuestion);
+
+  modal.classList.add("is-active");
+}
+
+
+function openModalDeleteUser(userId, username) {
+  let modal = document.getElementById("deleteModalUser");
+
+  const text = document.getElementById("delete-user-text");
+  text.innerText = `You are trying to delete ${username}.`;
+
+  const confirmEventUser = function(evt) {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEventUser);
+    this.classList.add("is-loading");
+
+    fetch("/api/questions/users/delete", {
+      method: "post",
+      credentials: "include",
+      body: JSON.stringify({
+        userId: userId
+      })
+    })
+      .then(response => response.json())
+      .then(jsonData => {
+        this.classList.remove("is-loading");
+        modal
+          .querySelector("button.confirm")
+          .addEventListener("click", confirmEventUser);
+        location.reload();
+      });
+  };
+
+  const closeModalUser = function() {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEventUser);
+    modal
+      .querySelector("button.cancel")
+      .removeEventListener("click", cancelEventUser);
+    modal
+      .querySelector(".modal-background")
+      .removeEventListener("click", cancelEventUser);
+    modal.classList.remove("is-active");
+  };
+
+  const cancelEventUser = closeModalUser;
+
+  modal.querySelector("button.confirm").addEventListener("click", confirmEventUser);
+  modal.querySelector("button.cancel").addEventListener("click", cancelEventUser);
+  modal
+    .querySelector(".modal-background")
+    .addEventListener("click", cancelEventUser);
 
   modal.classList.add("is-active");
 }

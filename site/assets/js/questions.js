@@ -89,3 +89,10 @@ function trySolve(questionId, answer) {
     })
   }).then(response => response.json());
 }
+
+function getUsers() {
+  return fetch("/api/questions/users/getAll", {
+    method: "post",
+    credentials: "include"
+  }).then(response => response.json());
+}

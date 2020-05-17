@@ -92,5 +92,19 @@ class SQLMethod:
                 SQLQuery.categories.deleteCategoryQuestions, (catId,), commit=False))
             result.append(database.update(
                 SQLQuery.categories.deleteCategory, (catId,), commit=False))
-            print(result)
+            return database.assertSQLResult(result)
+
+    class users:
+        @staticmethod
+        def getAllUsers():
+            return database.fetchAll(SQLQuery.users.getAllUsers)
+        
+        @staticmethod
+        def deleteUser(userId: int):
+            result = []
+            result.append(database.update(
+                SQLQuery.users.deleteUserSolves, (userId,), commit=False))
+            result.append(database.update(
+                SQLQuery.users.deleteUser, (userId,), commit=False))
+
             return database.assertSQLResult(result)

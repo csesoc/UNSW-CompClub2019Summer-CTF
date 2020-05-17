@@ -24,7 +24,7 @@ class SQLQuery:
         """
     deleteUser = """
         DELETE FROM users
-        WHERE user = ?
+        WHERE id = ?
         ;
         """
 
