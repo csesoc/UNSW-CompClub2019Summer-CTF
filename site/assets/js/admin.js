@@ -154,7 +154,7 @@ function dataToRow(data) {
 
   let answerReveal = document.createElement("button");
   answerReveal.classList.add("button", "is-outlined", "is-info");
-  answerReveal.innerText = "click to reveal";
+  answerReveal.innerText = "reveal";
   answer.appendChild(answerReveal);
   row.appendChild(answer);
 
@@ -411,6 +411,15 @@ function dataToRowCategory(data) {
   let category = document.createElement("td");
   category.innerText = categories[data.category] || "";
   row.appendChild(category);
+
+  let submission = document.createElement("td");
+  submission.classList.add("answer");
+
+  let submissionReveal = document.createElement("button");
+  submissionReveal.classList.add("button", "is-outlined", "is-info");
+  submissionReveal.innerText = "click to reveal";
+  submission.appendChild(submissionReveal);
+  row.appendChild(submission);
 
   let points = document.createElement("td");
   points.innerText = data.value;
