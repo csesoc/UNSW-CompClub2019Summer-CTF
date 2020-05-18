@@ -434,13 +434,13 @@ function dataToRowCategory(data) {
   deleteElem.appendChild(deleteBtn);
   row.appendChild(deleteElem);
 
-  /*answerReveal.addEventListener("click", answerRevealClickEvent);
   editBtn.addEventListener("click", function(evt) {
-    openModalEdit(data.id, this.parentElement.parentElement);
+    openModalEditSubmission(data.id, this.parentElement.parentElement);
   });
+
   deleteBtn.addEventListener("click", function(evt) {
-    openModalDeleteQuestion(data.id);
-  });*/
+    openModalDeleteSubmission(data.id);
+  });
 
   return row;
 }
@@ -739,6 +739,59 @@ function openModalEditSubmission(submissionId, srcElem) {
       .removeEventListener("click", cancelEvent);
     modal.classList.remove("is-active");
   };
+  const cancelEvent = closeModal;
+
+  modal.querySelector("button.confirm").addEventListener("click", confirmEvent);
+  modal.querySelector("button.cancel").addEventListener("click", cancelEvent);
+  modal
+    .querySelector(".modal-background")
+    .addEventListener("click", cancelEvent);
+
+  modal.classList.add("is-active");
+}
+
+function openModalDeleteSubmission(submission) {
+  let modal = document.getElementById("deleteModalSubmission");
+
+  const text = document.getElementById("delete-submission-text");
+  text.innerText = `You are trying to delete ${submissions[submission].title}.`;
+
+  const confirmEvent = function(evt) {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEvent);
+    this.classList.add("is-loading");
+
+    fetch("/api/questions/question/delete", {
+      method: "post",
+      credentials: "include",
+      body: JSON.stringify({
+        question: submission
+      })
+    })
+      .then(response => response.json())
+      .then(jsonData => {
+        this.classList.remove("is-loading");
+        modal
+          .querySelector("button.confirm")
+          .addEventListener("click", confirmEvent);
+        location.reload();
+      });
+  };
+
+  const closeModal = function() {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEvent);
+    modal
+      .querySelector("button.cancel")
+      .removeEventListener("click", cancelEvent);
+    modal
+      .querySelector(".modal-background")
+      .removeEventListener("click", cancelEvent);
+    modal.classList.remove("is-active");
+  };
+
   const cancelEvent = closeModal;
 
   modal.querySelector("button.confirm").addEventListener("click", confirmEvent);

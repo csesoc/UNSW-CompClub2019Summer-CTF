@@ -178,7 +178,7 @@ class SQLQuery:
         
         editSpecial = """
             UPDATE questions
-            SET title = ?, description = ?, value = ?, category = ?)
+            SET title = ?, description = ?, value = ?, category = ?
             WHERE id = ?
             ;
             """
