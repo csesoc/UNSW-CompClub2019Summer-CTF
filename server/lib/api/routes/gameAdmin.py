@@ -3,6 +3,7 @@ from tornado.web import authenticated, RequestHandler
 
 from lib.questions import SQLMethod as questionsSQLMethod
 from lib.auth import SQLMethod as authSQLMethod
+from lib.site import SSE_messages
 
 
 @routing.POST("/questions/question/submit")
@@ -124,8 +125,9 @@ def questionsSpecialApprove(self: RequestHandler, args: dict):
     if not self.current_user.isAdmin:
         return self.finish(JSON.error("access denied"))
 
-    result = questionsSQLMethod.questions.approveSolve(**args)
+    result = questionsSQLMethod.questions.approveSolve(args["solve"])
     if result:
+        SSE_messages.addMessage(args["username"] + " had a submission approved!")
         return self.finish(JSON.OK())
     return self.finish(JSON.FALSE())
 
@@ -135,8 +137,9 @@ def questionsSpecialUnapprove(self: RequestHandler, args: dict):
     if not self.current_user.isAdmin:
         return self.finish(JSON.error("access denied"))
 
-    result = questionsSQLMethod.questions.unapproveSolve(**args)
+    result = questionsSQLMethod.questions.unapproveSolve(args["solve"])
     if result:
+        SSE_messages.addMessage(args["username"] + " had a submission unapproved :(")
         return self.finish(JSON.OK())
     return self.finish(JSON.FALSE())
 

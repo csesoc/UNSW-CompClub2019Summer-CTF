@@ -55,14 +55,14 @@ class SQLQuery:
         approve = """
             UPDATE solves
             SET approved = 1
-            WHERE user = ? AND question = ?
+            WHERE id = ?
             ;
             """
         
         unapprove = """
             UPDATE solves
             SET approved = 0
-            WHERE user = ? AND question = ?
+            WHERE id = ?
             ;
             """
         

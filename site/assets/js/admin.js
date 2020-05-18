@@ -852,7 +852,11 @@ function openModalViewSubmissions(questionId, title) {
 
       let change = document.createElement("td");
       let changeBtn = document.createElement("button");
-      changeBtn.innerText = "change";
+      if (data[3] === 1) {
+        changeBtn.innerText = "unapprove";
+      } else if (data[3] === 0) {
+        changeBtn.innerText = "approve";
+      }
       changeBtn.classList.add("button", "is-outlined", "is-info");
       change.appendChild(changeBtn);
       row.appendChild(change);
@@ -867,6 +871,17 @@ function openModalViewSubmissions(questionId, title) {
       /*editBtn.addEventListener("click", function(evt) {
         openModalEdit(data.id, this.parentElement.parentElement);
       });*/
+
+      if (data[3] === 1) {
+        changeBtn.addEventListener("click", function() {
+          unapproveSolve(data[0], data[1], changeBtn);
+        });
+      } else if (data[3] === 0) {
+        changeBtn.addEventListener("click", function() {
+          approveSolve(data[0], data[1], changeBtn);
+        });
+      }
+
       deleteBtn.addEventListener("click", function(evt) {
         modal.classList.remove("is-active");
         viewDeleteModalSubmission(data[0], data[1], data[2], modal, row, body);
@@ -899,6 +914,7 @@ function openModalViewSubmissions(questionId, title) {
 
 function viewDeleteModalSubmission(solveID, user, submission, parent, row, table) {
   let modal = document.getElementById("viewDeleteModalSubmission");
+  const p = document.getElementById("submission-user");
 
   const text = document.getElementById("delete-category-text");
   text.innerText = `You are trying to delete the following submission by ${user}:\n${submission}`;
@@ -1008,4 +1024,50 @@ function openModalDeleteQuestion(question) {
     .addEventListener("click", cancelEventQuestion);
 
   modal.classList.add("is-active");
+}
+
+function approveSolve(solveId, username, button) {
+  fetch("/api/questions/special/approve", {
+    method: "post",
+    credentials: "include",
+    body: JSON.stringify({
+      solve: solveId,
+      username: username.toString()
+    })
+  })
+  .then(response => response.json())
+  .then(jsonData => {
+    if (jsonData.status) {
+      button.innerText = 'unapprove';
+      button.removeEventListener("click", function() {
+        approveSolve(solveId, username, button);
+      });
+      button.addEventListener("click", function() {
+        unapproveSolve(solveId, username, button);
+      });
+    }
+  })
+}
+
+function unapproveSolve(solveId, username, button) {
+  fetch("/api/questions/special/unapprove", {
+    method: "post",
+    credentials: "include",
+    body: JSON.stringify({
+      solve: solveId,
+      username: username.toString()
+    })
+  })
+  .then(response => response.json())
+  .then(jsonData => {
+    if (jsonData.status) {
+      button.innerText = 'approve';
+      button.removeEventListener("click", function() {
+        unapproveSolve(solveId, username, button);
+      });
+      button.addEventListener("click", function() {
+        approveSolve(solveId, username, button);
+      });
+    }
+  })
 }
