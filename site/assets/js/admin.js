@@ -154,7 +154,7 @@ function dataToRow(data) {
 
   let answerReveal = document.createElement("button");
   answerReveal.classList.add("button", "is-outlined", "is-info");
-  answerReveal.innerText = "reveal";
+  answerReveal.innerText = "reveal answer";
   answer.appendChild(answerReveal);
   row.appendChild(answer);
 
@@ -417,7 +417,7 @@ function dataToRowCategory(data) {
 
   let submissionReveal = document.createElement("button");
   submissionReveal.classList.add("button", "is-outlined", "is-info");
-  submissionReveal.innerText = "click to reveal";
+  submissionReveal.innerText = "see submissions";
   submission.appendChild(submissionReveal);
   row.appendChild(submission);
 
