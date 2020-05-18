@@ -868,7 +868,8 @@ function openModalViewSubmissions(questionId, title) {
         openModalEdit(data.id, this.parentElement.parentElement);
       });*/
       deleteBtn.addEventListener("click", function(evt) {
-        viewDeleteModalSubmission(data[0], data[1], data[2]);
+        modal.classList.remove("is-active");
+        viewDeleteModalSubmission(data[0], data[1], data[2], modal, row, body);
       });
 
       body.appendChild(row);
@@ -896,7 +897,7 @@ function openModalViewSubmissions(questionId, title) {
   modal.classList.add("is-active");
 }
 
-function viewDeleteModalSubmission(solveID, user, submission) {
+function viewDeleteModalSubmission(solveID, user, submission, parent, row, table) {
   let modal = document.getElementById("viewDeleteModalSubmission");
 
   const text = document.getElementById("delete-category-text");
@@ -921,13 +922,14 @@ function viewDeleteModalSubmission(solveID, user, submission) {
         modal
           .querySelector("button.confirm")
           .addEventListener("click", confirmEventCategory);
-        location.reload();
+        table.removeChild(row);
+        modal.classList.remove("is-active");
+        parent.classList.add("is-active");
       });
     this.classList.remove("is-loading");
     modal
       .querySelector("button.confirm")
       .addEventListener("click", confirmEventCategory);
-    location.reload();
   };
 
   const closeModalCategory = function() {
@@ -941,6 +943,7 @@ function viewDeleteModalSubmission(solveID, user, submission) {
       .querySelector(".modal-background")
       .removeEventListener("click", cancelEventCategory);
     modal.classList.remove("is-active");
+    parent.classList.add("is-active");
   };
 
   const cancelEventCategory = closeModalCategory;
