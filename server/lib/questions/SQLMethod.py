@@ -19,8 +19,8 @@ class SQLMethod:
 
         # Admin functions
         @staticmethod
-        def unsolveQuestion(user: int, question: int):
-            return database.update(SQLQuery.solves.deleteSpecific, (user, question))
+        def deleteSolve(solve: int):
+            return database.update(SQLQuery.solves.deleteSpecific, (solve,))
 
         @staticmethod
         def createQuestion(title: str, description: str, answer: str, value: int, category: int):
@@ -50,20 +50,16 @@ class SQLMethod:
             return database.update(SQLQuery.solves.deleteUser, (user,))
         
         @staticmethod
-        def approveSolve(user: int, question: int):
-            return database.update(SQLQuery.solves.approve, (user, question))
+        def approveSolve(solve: int):
+            return database.update(SQLQuery.solves.approve, (solve,))
 
         @staticmethod
-        def unapproveSolve(user: int, question: int):
-            return database.update(SQLQuery.solves.unapprove, (user, question))
-        
-        @staticmethod
-        def getQuestionsNormal():
-            return database.fetchAll(SQLQuery.solves.getQuestionsNull)
+        def unapproveSolve(solve: int):
+            return database.update(SQLQuery.solves.unapprove, (solve,))
 
         @staticmethod
-        def getQuestionsSpecial():
-            return database.fetchAll(SQLQuery.solves.getQuestionsNotNull)
+        def getQuestionsSpecial(question: int):
+            return database.fetchAll(SQLQuery.solves.getSolvesSpecial, (question,))
         
         @staticmethod
         def addSpecial(title: str, description: str, value: int, category: int):

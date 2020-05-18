@@ -193,6 +193,51 @@
   margin: 0;
 }
 
+#viewModalSubmission .modal-card > * {
+  border: 2px solid rgba(22, 131, 155, 0.5);
+}
+
+#viewModalSubmission .modal-card header,
+#viewModalSubmission .modal-card footer {
+  background-color: rgba(22, 131, 155, 0.5);
+}
+
+#viewModalSubmission .modal-card section {
+  background-color: rgba(11, 126, 152, 0.22);
+}
+
+#viewModalSubmission textarea[name="description"] {
+  resize: none;
+}
+
+#viewModalSubmission:not(.editQuestion) form p {
+  margin-right: 0;
+}
+
+#viewModalSubmission:not(.editQuestion) form a.button {
+  display: none;
+}
+
+#viewModalSubmission .valueField {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+#viewModalSubmission [name="value"] {
+  width: 100px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+#viewModalSubmission select {
+  background-color: #133945 !important;
+}
+
+#viewModalSubmission input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 
 .deleteModal .modal-card > * {
   border: 2px solid rgba(22, 131, 155, 0.5);

@@ -210,7 +210,7 @@ function dataToRow(data) {
   return row;
 }
 
-Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers(), getSubmissions()]).then(
+Promise.all([getQuestionsNormal(), getCategories(), getSolvesAdmin(), getUsers(), getSubmissions()]).then(
   ([questionsData, categoriesData, solvesData, usersData, submissionsData]) => {
     let modal = document.getElementById("editModal");
     let categoryElem = modal.querySelector("select");
@@ -358,7 +358,7 @@ Promise.all([getQuestions(), getCategories(), getSolvesAdmin(), getUsers(), getS
         }
         document
           .querySelector("[name=submissions]")
-          .appendChild(dataToRowCategory(submissions[data[0]]));
+          .appendChild(dataToRowSubmissions(submissions[data[0]]));
       }
     }
   }
@@ -400,7 +400,7 @@ function prepareUsers(usersData) {
   }
 }
 
-function dataToRowCategory(data) {
+function dataToRowSubmissions(data) {
   let row = document.createElement("tr");
   row.name = "question-" + data.id;
 
@@ -442,6 +442,10 @@ function dataToRowCategory(data) {
   deleteBtn.classList.add("button", "is-outlined", "is-info");
   deleteElem.appendChild(deleteBtn);
   row.appendChild(deleteElem);
+
+  submissionReveal.addEventListener("click", function() {
+    openModalViewSubmissions(data.id, data.title);
+  });
 
   editBtn.addEventListener("click", function(evt) {
     openModalEditSubmission(data.id, this.parentElement.parentElement);
@@ -808,6 +812,197 @@ function openModalDeleteSubmission(submission) {
   modal
     .querySelector(".modal-background")
     .addEventListener("click", cancelEvent);
+
+  modal.classList.add("is-active");
+}
+
+
+
+
+
+
+
+
+
+function openModalViewSubmissions(questionId, title) {
+  let modal = document.getElementById("viewModalSubmission");
+  const titleSubmission = document.getElementById("title-submissions")
+  titleSubmission.innerText = `Submissions for ${title}`;
+
+  const body = document.querySelector("[name=view-submissions]");
+  fetch("/api/questions/special/solves", {
+    method: "post",
+    credentials: "include",
+    body: JSON.stringify({
+      question: questionId
+    })
+  })
+  .then(response => response.json())
+  .then(jsonData => {
+    for (let data of jsonData.data || []) {
+      const row = document.createElement("tr");
+
+      const user = document.createElement("td");
+      user.innerText = data[1];
+      row.appendChild(user);
+
+      const submission = document.createElement("td");
+      submission.innerText = data[2];
+      row.appendChild(submission);
+
+      let change = document.createElement("td");
+      let changeBtn = document.createElement("button");
+      changeBtn.innerText = "change";
+      changeBtn.classList.add("button", "is-outlined", "is-info");
+      change.appendChild(changeBtn);
+      row.appendChild(change);
+
+      let deleteElem = document.createElement("td");
+      let deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "delete";
+      deleteBtn.classList.add("button", "is-outlined", "is-info");
+      deleteElem.appendChild(deleteBtn);
+      row.appendChild(deleteElem);
+
+      /*editBtn.addEventListener("click", function(evt) {
+        openModalEdit(data.id, this.parentElement.parentElement);
+      });*/
+      deleteBtn.addEventListener("click", function(evt) {
+        viewDeleteModalSubmission(data[0], data[1], data[2]);
+      });
+
+      body.appendChild(row);
+
+    }
+  });
+
+  const closeModalCategory = function() {
+    modal
+      .querySelector("button.cancel")
+      .removeEventListener("click", cancelEventCategory);
+    modal
+      .querySelector(".modal-background")
+      .removeEventListener("click", cancelEventCategory);
+    modal.classList.remove("is-active");
+  };
+
+  const cancelEventCategory = closeModalCategory;
+
+  modal.querySelector("button.cancel").addEventListener("click", cancelEventCategory);
+  modal
+    .querySelector(".modal-background")
+    .addEventListener("click", cancelEventCategory);
+
+  modal.classList.add("is-active");
+}
+
+function viewDeleteModalSubmission(solveID, user, submission) {
+  let modal = document.getElementById("viewDeleteModalSubmission");
+
+  const text = document.getElementById("delete-category-text");
+  text.innerText = `You are trying to delete the following submission by ${user}:\n${submission}`;
+
+  const confirmEventCategory = function(evt) {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEventCategory);
+    this.classList.add("is-loading");
+
+    fetch("/api/questions/special/delete", {
+      method: "post",
+      credentials: "include",
+      body: JSON.stringify({
+        solve: solveID
+      })
+    })
+      .then(response => response.json())
+      .then(jsonData => {
+        this.classList.remove("is-loading");
+        modal
+          .querySelector("button.confirm")
+          .addEventListener("click", confirmEventCategory);
+        location.reload();
+      });
+    this.classList.remove("is-loading");
+    modal
+      .querySelector("button.confirm")
+      .addEventListener("click", confirmEventCategory);
+    location.reload();
+  };
+
+  const closeModalCategory = function() {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEventCategory);
+    modal
+      .querySelector("button.cancel")
+      .removeEventListener("click", cancelEventCategory);
+    modal
+      .querySelector(".modal-background")
+      .removeEventListener("click", cancelEventCategory);
+    modal.classList.remove("is-active");
+  };
+
+  const cancelEventCategory = closeModalCategory;
+
+  modal.querySelector("button.confirm").addEventListener("click", confirmEventCategory);
+  modal.querySelector("button.cancel").addEventListener("click", cancelEventCategory);
+  modal
+    .querySelector(".modal-background")
+    .addEventListener("click", cancelEventCategory);
+
+  modal.classList.add("is-active");
+}
+
+function openModalDeleteQuestion(question) {
+  let modal = document.getElementById("deleteModalQuestion");
+
+  const text = document.getElementById("delete-question-text");
+  text.innerText = `You are trying to delete ${questions[question].title}.`;
+
+  const confirmEventQuestion = function(evt) {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEventQuestion);
+    this.classList.add("is-loading");
+
+    fetch("/api/questions/question/delete", {
+      method: "post",
+      credentials: "include",
+      body: JSON.stringify({
+        question: question
+      })
+    })
+      .then(response => response.json())
+      .then(jsonData => {
+        this.classList.remove("is-loading");
+        modal
+          .querySelector("button.confirm")
+          .addEventListener("click", confirmEventQuestion);
+        location.reload();
+      });
+  };
+
+  const closeModalQuestion = function() {
+    modal
+      .querySelector("button.confirm")
+      .removeEventListener("click", confirmEventQuestion);
+    modal
+      .querySelector("button.cancel")
+      .removeEventListener("click", cancelEventQuestion);
+    modal
+      .querySelector(".modal-background")
+      .removeEventListener("click", cancelEventQuestion);
+    modal.classList.remove("is-active");
+  };
+
+  const cancelEventQuestion = closeModalQuestion;
+
+  modal.querySelector("button.confirm").addEventListener("click", confirmEventQuestion);
+  modal.querySelector("button.cancel").addEventListener("click", cancelEventQuestion);
+  modal
+    .querySelector(".modal-background")
+    .addEventListener("click", cancelEventQuestion);
 
   modal.classList.add("is-active");
 }

@@ -2,6 +2,7 @@ class SQLQuery:
     class solves:
         createTable = """
             CREATE TABLE IF NOT EXISTS solves (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user INTEGER NOT NULL,
                 question INTEGER NOT NULL,
                 answer TEXT DEFAULT NULL,
@@ -26,7 +27,7 @@ class SQLQuery:
 
         deleteSpecific = """
             DELETE FROM solves
-            WHERE user = ? AND question = ?
+            WHERE id = ?
             ;
             """
 
@@ -72,17 +73,10 @@ class SQLQuery:
             ;
             """
         
-        getQuestionsNull = """
-            SELECT user, question
+        getSolvesSpecial = """
+            SELECT id, user, answer, approved
             FROM solves
-            WHERE answer is NULL
-            ;
-            """
-        
-        getQuestionsNotNull = """
-            SELECT *
-            FROM solves
-            WHERE answer is NOT NULL
+            WHERE question = ?
             ;
             """
     

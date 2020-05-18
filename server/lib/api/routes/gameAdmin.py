@@ -140,21 +140,24 @@ def questionsSpecialUnapprove(self: RequestHandler, args: dict):
         return self.finish(JSON.OK())
     return self.finish(JSON.FALSE())
 
-@routing.POST("/questions/normal")
+@routing.POST("/questions/special/delete")
 @authenticated
-def questionsNormal(self: RequestHandler, args: dict):
+def questionsSpecialDelete(self: RequestHandler, args: dict):
     if not self.current_user.isAdmin:
         return self.finish(JSON.error("access denied"))
 
-    return self.finish(JSON.data(questionsSQLMethod.questions.getQuestionsNormal()))
+    result = questionsSQLMethod.questions.deleteSolve(**args)
+    if result:
+        return self.finish(JSON.OK())
+    return self.finish(JSON.FALSE())
 
-@routing.POST("/questions/special")
+@routing.POST("/questions/special/solves")
 @authenticated
 def questionsSpecial(self: RequestHandler, args: dict):
     if not self.current_user.isAdmin:
         return self.finish(JSON.error("access denied"))
 
-    return self.finish(JSON.data(questionsSQLMethod.questions.getQuestionsSpecial()))
+    return self.finish(JSON.data(questionsSQLMethod.questions.getQuestionsSpecial(**args)))
 
 @routing.POST("/questions/special/add")
 @authenticated

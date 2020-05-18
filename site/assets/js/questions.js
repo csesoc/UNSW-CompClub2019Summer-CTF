@@ -43,6 +43,13 @@ function getQuestions() {
   }).then(response => response.json());
 }
 
+function getQuestionsNormal() {
+  return fetch("/api/questions/questions.json", {
+    method: "post",
+    credentials: "include"
+  }).then(response => response.json());
+}
+
 function getCategories() {
   return fetch("/api/questions/categories.json", {
     method: "post",
