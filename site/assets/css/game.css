@@ -109,8 +109,13 @@
   flex-direction: column;
 }
 
-#questionModalSpecial.solved [name="title"]::before {
+#questionModalSpecial.pending [name="title"]::before {
   content: "[solved] ";
+  color: hsl(0, 0%, 71%);
+}
+
+#questionModalSpecial.pending [name="title"]::before {
+  content: "[pending] ";
   color: hsl(0, 0%, 71%);
 }
 
@@ -130,13 +135,18 @@
   content: " pts";
 }
 
-#questionModalSpecial:not(.solved) [name="value"] {
+#questionModalSpecial:not(.solved .pending) [name="value"] {
   transition: color 0.5s;
 }
 
 #questionModalSpecial [name="value"].solved,
 #questionModalSpecial.solved [name="value"] {
   color: green;
+}
+
+#questionModalSpecial [name="value"].pending,
+#questionModalSpecial.pending [name="value"] {
+  color: yellow;
 }
 
 #questionModalSpecial [name="description"] {
@@ -214,6 +224,11 @@ article:hover {
 article.solved {
   color: black;
   background-color: hsl(141, 71%, 48%) !important;
+}
+
+article.pending {
+  color: black;
+  background-color: hsl(54, 89%, 65%) !important;
 }
 
 article h2:not(:empty)::before {

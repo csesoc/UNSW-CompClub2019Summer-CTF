@@ -178,8 +178,8 @@ function openModalQuestionSpecial(questionData, srcElem) {
             parseInt(modal.querySelector("[name=solves]").innerText) + 1;
           updateLeaderboard();
         }*/
-        modal.querySelector("[name=value]").classList.add("solved");
-        srcElem.classList.add("solved");
+        modal.querySelector("[name=value]").classList.add("pending");
+        srcElem.classList.add("pending");
       }
     });
   };

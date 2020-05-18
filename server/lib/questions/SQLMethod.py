@@ -140,7 +140,7 @@ class SQLMethod:
         def getAllUsers():
             users = database.fetchAll(SQLQuery.users.getAllUsers)
             for i, user in enumerate(users):
-                questionsSQL = SQLMethod.questions.getQuestions()
+                questionsSQL = SQLMethod.questions.getQuestionsBoth()
                 solvesSQL = SQLMethod.questions.getSolves(user=user[0])
 
                 pointsMap = {}
