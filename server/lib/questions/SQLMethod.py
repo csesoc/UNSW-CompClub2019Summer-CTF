@@ -12,6 +12,10 @@ class SQLMethod:
         @staticmethod
         def addUnapproved(user: int, question: int, answer: str):
             return database.insert(SQLQuery.solves.addUnapproved, (user, question, answer))
+        
+        @staticmethod
+        def getQuestionsBoth():
+            return database.fetchAll(SQLQuery.questions.getAllBoth)
 
         # Admin functions
         @staticmethod
@@ -91,7 +95,7 @@ class SQLMethod:
                 return list(map(lambda result: result[0], database.fetchAll(SQLQuery.solves.getQuestion, (question,))))
             else:
                 return database.fetchAll(SQLQuery.solves.getAll)
-                
+
         @staticmethod
         def getQuestions(*, question: int = None, answer: bool = False):
             if question:

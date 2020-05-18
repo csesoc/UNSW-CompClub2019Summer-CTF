@@ -54,6 +54,7 @@
       if (event.lastEventId.split(":")[2] > startTime) {
         if (event.data === "reload") {
           reloadListener();
+          reloadListenerSpecial();
         }
       }
     });

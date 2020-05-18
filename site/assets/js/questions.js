@@ -37,7 +37,7 @@ fetch("/api/auth/me", {
 });
 
 function getQuestions() {
-  return fetch("/api/questions/questions.json", {
+  return fetch("/api/questions/questionsBoth.json", {
     method: "post",
     credentials: "include"
   }).then(response => response.json());
@@ -83,6 +83,17 @@ function getLeaderboard() {
 
 function trySolve(questionId, answer) {
   return fetch("/api/questions/solve", {
+    method: "post",
+    credentials: "include",
+    body: JSON.stringify({
+      question: questionId,
+      answer: answer
+    })
+  }).then(response => response.json());
+}
+
+function submitSpecial(questionId, answer) {
+  return fetch("/api/questions/special/solve", {
     method: "post",
     credentials: "include",
     body: JSON.stringify({

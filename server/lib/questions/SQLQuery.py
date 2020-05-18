@@ -7,8 +7,7 @@ class SQLQuery:
                 answer TEXT DEFAULT NULL,
                 approved INTEGER DEFAULT 1,
                 FOREIGN KEY (user) REFERENCES users (id),
-                FOREIGN KEY (question) REFERENCES questions (id),
-                UNIQUE (user, question)
+                FOREIGN KEY (question) REFERENCES questions (id)
             );
             """
 
@@ -69,7 +68,7 @@ class SQLQuery:
         addUnapproved = """
             INSERT
             INTO solves (user, question, answer, approved)
-            VALUES (?, ?, ?, 1)
+            VALUES (?, ?, ?, 0)
             ;
             """
         
@@ -194,6 +193,12 @@ class SQLQuery:
             SELECT id, title, description, value, category
             FROM questions
             WHERE id = ? AND type = 1
+            ;
+            """
+
+        getAllBoth = """
+            SELECT id, title, description, value, category, type
+            FROM questions
             ;
             """
 

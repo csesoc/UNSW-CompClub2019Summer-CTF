@@ -5,7 +5,7 @@
   src="assets/js/isotope.pkgd.min.js"
   defer
 ></script>
-<link rel="stylesheet" href="/assets/css/fun.css" />
+<link rel="stylesheet" />
 {% endblock %}
 {% block content %}
 <div id="questionModal" class="modal">
@@ -43,6 +43,45 @@
     </footer>
   </div>
 </div>
+
+
+<div id="questionModalSpecial" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title has-text-light">
+        <span name="title"></span>
+        <span class="has-text-grey-light" name="category"></span>
+      </p>
+      <button class="delete cancel" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <p name="description"></p>
+      <form>
+        <div class="field is-grouped">
+          <p class="control is-expanded">
+            <input
+              class="input blueBox has-text-centered has-text-light"
+              name="answer"
+              type="text"
+              placeholder="noice!!!"
+              spellcheck="false"
+            />
+          </p>
+          <p class="control">
+            <a class="button">SUBMIT</a>
+          </p>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot has-text-light">
+      <span name="solves"></span>
+      <div name="value"></div>
+    </footer>
+  </div>
+</div>
+
+
 <div class="container"style="margin-right: 25vw; width: 70vw;">
   <div name="scope">
     <div name="filter">

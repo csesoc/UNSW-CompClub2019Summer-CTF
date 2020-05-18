@@ -78,6 +78,86 @@
   user-select: text;
 }
 
+#questionModalSpecial {
+  opacity: 0;
+  transition: opacity 200ms;
+  display: flex;
+  pointer-events: none;
+}
+
+#questionModalSpecial.is-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#questionModalSpecial .modal-card {
+  height: 75%;
+}
+
+#questionModalSpecial .modal-card > * {
+  border: 2px solid rgba(22, 131, 155, 0.5);
+}
+
+#questionModalSpecial .modal-card header,
+#questionModalSpecial .modal-card footer {
+  background-color: rgba(22, 131, 155, 0.5);
+}
+
+#questionModalSpecial .modal-card section {
+  background-color: rgba(11, 126, 152, 0.22);
+  display: flex;
+  flex-direction: column;
+}
+
+#questionModalSpecial.solved [name="title"]::before {
+  content: "[solved] ";
+  color: hsl(0, 0%, 71%);
+}
+
+#questionModalSpecial [name="solves"]:not(:empty)::before {
+  content: "solves: ";
+}
+
+#questionModalSpecial [name="solves"] {
+  flex-grow: 1;
+}
+
+#questionModalSpecial [name="category"]:not(:empty)::before {
+  content: ": ";
+}
+
+#questionModalSpecial [name="value"]::after {
+  content: " pts";
+}
+
+#questionModalSpecial:not(.solved) [name="value"] {
+  transition: color 0.5s;
+}
+
+#questionModalSpecial [name="value"].solved,
+#questionModalSpecial.solved [name="value"] {
+  color: green;
+}
+
+#questionModalSpecial [name="description"] {
+  width: 100%;
+  flex-grow: 1;
+
+  font-family: Hack, monospace;
+  color: white;
+
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+#questionModalSpecial [name="description"],
+#questionModalSpecial [name="description"] * {
+  user-select: text;
+}
+
 body > div.container {
   /* pointer-events: none; */ /* Allow background hover 
                              BUG: breaks scrolling  */

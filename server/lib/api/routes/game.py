@@ -12,6 +12,10 @@ from lib.site import SSE_messages
 def questions(self: RequestHandler, args: dict):
     self.finish(JSON.data(questionsSQLMethod.questions.getQuestions()))
 
+@routing.POST("/questions/questionsBoth.json")
+@authenticated
+def questionsBoth(self: RequestHandler, args: dict):
+    self.finish(JSON.data(questionsSQLMethod.questions.getQuestionsBoth()))
 
 @routing.POST("/questions/categories.json")
 @authenticated
@@ -21,7 +25,7 @@ def categories(self: RequestHandler, args: dict):
 
 @routing.POST("/questions/leaderboard.json")
 def leaderboard(self: RequestHandler, args: dict):
-    questionsSQL = questionsSQLMethod.questions.getQuestions()
+    questionsSQL = questionsSQLMethod.questions.getQuestionsBoth()
     solvesSQL = questionsSQLMethod.questions.getSolves()
     usersSQL = authSQLMethod.getUsers()
 
@@ -91,6 +95,6 @@ def trySolve(self: RequestHandler, args: dict):
 def submitSpecial(self: RequestHandler, args: dict):
     result = questionsSQLMethod.questions.addUnapproved(self.current_user.id, args["question"], args["answer"])
     if result:
-        SSE_messages.addMessage(self.current_user.username + " has found an answer!")
+        SSE_messages.addMessage(self.current_user.username + " made a submission!")
         return self.finish(JSON.YES())
     return self.finish(JSON.NO())
