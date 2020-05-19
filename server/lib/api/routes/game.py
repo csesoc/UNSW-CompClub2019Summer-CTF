@@ -49,6 +49,10 @@ def leaderboard(self: RequestHandler, args: dict):
 def adminSolves(self: RequestHandler, args: dict):
     return self.finish(JSON.data(questionsSQLMethod.questions.getSolves()))
 
+@routing.POST("/questions/adminPending.json")
+@authenticated
+def adminPending(self: RequestHandler, args: dict):
+    return self.finish(JSON.data(questionsSQLMethod.questions.getPending()))
 
 @routing.POST("/questions/userSolves.json")
 @authenticated

@@ -210,8 +210,8 @@ function dataToRow(data) {
   return row;
 }
 
-Promise.all([getQuestionsNormal(), getCategories(), getSolvesAdmin(), getUsers(), getSubmissions()]).then(
-  ([questionsData, categoriesData, solvesData, usersData, submissionsData]) => {
+Promise.all([getQuestionsNormal(), getCategories(), getSolvesAdmin(), getPendingAdmin(), getUsers(), getSubmissions()]).then(
+  ([questionsData, categoriesData, solvesData, pendingData, usersData, submissionsData]) => {
     let modal = document.getElementById("editModal");
     let categoryElem = modal.querySelector("select");
     let modalSubmission = document.getElementById("editModalSubmission");
@@ -267,6 +267,12 @@ Promise.all([getQuestionsNormal(), getCategories(), getSolvesAdmin(), getUsers()
     if (solvesData.status && solvesData.data) {
       for ([user, question] of solvesData.data) {
         solves[question] = (solves[question] || []).concat(user);
+      }
+    }
+
+    if (pendingData.status && pendingData.data) {
+      for ([user, question] of pendingData.data) {
+        pending[question] = (pending[question] || []).concat(user);
       }
     }
 
@@ -429,6 +435,10 @@ function dataToRowSubmissions(data) {
   solveCount.innerText = (solves[data.id] || []).length;
   row.appendChild(solveCount);
 
+  let pendingCount = document.createElement("td");
+  pendingCount.innerText = (pending[data.id] || []).length;
+  row.appendChild(pendingCount);
+
   let edit = document.createElement("td");
   let editBtn = document.createElement("button");
   editBtn.innerText = "edit";
@@ -444,7 +454,7 @@ function dataToRowSubmissions(data) {
   row.appendChild(deleteElem);
 
   submissionReveal.addEventListener("click", function() {
-    openModalViewSubmissions(data.id, data.title, solveCount);
+    openModalViewSubmissions(data.id, data.title, solveCount, pendingCount);
   });
 
   editBtn.addEventListener("click", function(evt) {
@@ -816,7 +826,7 @@ function openModalDeleteSubmission(submission) {
   modal.classList.add("is-active");
 }
 
-function openModalViewSubmissions(questionId, title, solves) {
+function openModalViewSubmissions(questionId, title, solves, pending) {
   let modal = document.getElementById("viewModalSubmission");
   const titleSubmission = document.getElementById("title-submissions")
   titleSubmission.innerText = `Submissions for ${title}`;
@@ -831,6 +841,7 @@ function openModalViewSubmissions(questionId, title, solves) {
   })
   .then(response => response.json())
   .then(jsonData => {
+    body.innerText = "";
     for (let data of jsonData.data || []) {
       const row = document.createElement("tr");
 
@@ -862,11 +873,11 @@ function openModalViewSubmissions(questionId, title, solves) {
 
       if (data[3] === 1) {
         changeBtn.addEventListener("click", function() {
-          unapproveSolve(data[0], data[4], changeBtn, change, solves);
+          unapproveSolve(data[0], data[4], changeBtn, change, solves, pending);
         });
       } else if (data[3] === 0) {
         changeBtn.addEventListener("click", function() {
-          approveSolve(data[0], data[4], changeBtn, change, solves);
+          approveSolve(data[0], data[4], changeBtn, change, solves, pending);
         });
       }
 
@@ -1014,7 +1025,7 @@ function openModalDeleteQuestion(question) {
   modal.classList.add("is-active");
 }
 
-function approveSolve(solveId, username, button, parent, solves) {
+function approveSolve(solveId, username, button, parent, solves, pending) {
   fetch("/api/questions/special/approve", {
     method: "post",
     credentials: "include",
@@ -1028,9 +1039,10 @@ function approveSolve(solveId, username, button, parent, solves) {
     if (jsonData.status) {
       button.innerText = 'unapprove';
       solves.innerText = parseInt(solves.innerText) + 1;
+      pending.innerText = parseInt(pending.innerText) - 1;
       newButton = button.cloneNode(true);
       newButton.addEventListener("click", function() {
-        unapproveSolve(solveId, username, button, parent, solves);
+        unapproveSolve(solveId, username, button, parent, solves, pending);
       });
       while (parent.firstChild) {
         parent.removeChild(parent.lastChild);
@@ -1040,7 +1052,7 @@ function approveSolve(solveId, username, button, parent, solves) {
   })
 }
 
-function unapproveSolve(solveId, username, button, parent, solves) {
+function unapproveSolve(solveId, username, button, parent, solves, pending) {
   fetch("/api/questions/special/unapprove", {
     method: "post",
     credentials: "include",
@@ -1054,9 +1066,10 @@ function unapproveSolve(solveId, username, button, parent, solves) {
     if (jsonData.status) {
       button.innerText = 'approve';
       solves.innerText = parseInt(solves.innerText) - 1;
+      pending.innerText = parseInt(pending.innerText) + 1;
       newButton = button.cloneNode(true);
       newButton.addEventListener("click", function() {
-        approveSolve(solveId, username, button, parent, solves);
+        approveSolve(solveId, username, button, parent, solves, pending);
       });
       while (parent.firstChild) {
         parent.removeChild(parent.lastChild);

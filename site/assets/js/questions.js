@@ -65,6 +65,13 @@ function getSolvesAdmin() {
   }).then(response => response.json());
 }
 
+function getPendingAdmin() {
+  return fetch("/api/questions/pendingSolves.json", {
+    method: "post",
+    credentials: "include"
+  }).then(response => response.json());
+}
+
 function getSolves(questionId) {
   if (questionId !== undefined) {
     return fetch("/api/questions/questionSolves.json", {
