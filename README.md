@@ -16,6 +16,7 @@ The admin can create/edit:
 Questions and submissions that have been approved are awarded points.
 
 The admin can view a user's username, points and solves. They can also delete a user.
+
 Users can be viewed sorted by:
 - Username (Descending)
 - Username (Ascending)
@@ -42,7 +43,7 @@ python3 server.py
 ```
 
 ## HTTP v HTTPS
-The following assumes the server will run over HTTPS. Change ```scavhunt.tech``` to the appropriate domain. It also assumes that you have installed a HTTPS certificate at the following locations:
+The following assumes the server will run over HTTPS. Change ```scavhunt.tech``` to the appropriate domain. It also assumes that you have installed a HTTPS certificate at the following location:
 ```
 /etc/letsencrypt/live/scavhunt.tech/fullchain.pem
 /etc/letsencrypt/live/scavhunt.tech/privkey.pem
