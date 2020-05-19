@@ -109,7 +109,7 @@
   flex-direction: column;
 }
 
-#questionModalSpecial.pending [name="title"]::before {
+#questionModalSpecial.solved [name="title"]::before {
   content: "[solved] ";
   color: hsl(0, 0%, 71%);
 }
