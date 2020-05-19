@@ -69,6 +69,7 @@ function openModalQuestion(questionData, srcElem) {
         }
   
       } else {
+        console.log("placeholder");
         modal.querySelector("[name=answer]").placeholder =
           answerValue + " was not right!";
         modal.querySelector("[name=answer]").value = "";
@@ -191,8 +192,6 @@ function openModalQuestionSpecial(questionData, srcElem) {
       modal.querySelector("form").addEventListener("submit", submitEvent);
 
       if (jsonData.status) {
-        modal.querySelector("[name=answer]").placeholder = "submission made";
-        modal.querySelector("[name=answer]").value = "";
         pending.push(questionData.id);
         modal.querySelector("[name=pending]").innerText =
           parseInt(modal.querySelector("[name=pending]").innerText) + 1;
