@@ -72,7 +72,17 @@ function openModalQuestion(questionData, srcElem) {
     });
   };
 
-  modal.querySelector("form .button").onclick = submitEvent;
+  const form = modal.querySelector("form");
+  if (!solves.has(questionData.id)) {
+    if (form.classList.contains("hide")) {
+      form.classList.remove("hide");
+    }
+    modal.querySelector("form .button").onclick = submitEvent;
+  } else {
+    if (!form.classList.contains("hide")) {
+      form.classList.add("hide");
+    }
+  }
 
   const closeModal = function() {
     questions[questionData.id].inputValue = modal.querySelector(
@@ -188,7 +198,35 @@ function openModalQuestionSpecial(questionData, srcElem) {
     });
   };
 
-  modal.querySelector("form .button").onclick = submitEvent;
+  if (solves.has(questionData.id)) {
+    const form = modal.querySelector("form");
+    if (!form.classList.contains("hide")) {
+      form.classList.add("hide");
+    }
+    const deleteElem = document.getElementById("delete");
+    if (!deleteElem.classList.contains("hide")) {
+      deleteElem.classList.add("hide")
+    }
+  } else if (pending.has(questionData.id)) {
+    const form = modal.querySelector("form");
+    if (!form.classList.contains("hide")) {
+      form.classList.add("hide");
+    }
+    const deleteElem = document.getElementById("delete");
+    if (deleteElem.classList.contains("hide")) {
+      deleteElem.classList.remove("hide");
+    }
+  } else {
+    const form = modal.querySelector("form");
+    if (form.classList.contains("hide")) {
+      form.classList.remove("hide");
+    }
+    const deleteElem = document.getElementById("delete");
+    if (!deleteElem.classList.contains("hide")) {
+      deleteElem.classList.add("hide");
+    }
+    modal.querySelector("form .button").onclick = submitEvent;
+  }
 
   const closeModal = function() {
     questions[questionData.id].inputValue = modal.querySelector(

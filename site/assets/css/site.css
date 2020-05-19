@@ -129,11 +129,27 @@ form .button:hover,
   border-color: rgba(11, 126, 152, 0.22) !important;
 }
 
-.blueBox:focus {
+#delete .button {
+  color: white !important;
+  background-color: transparent;
+  border-color: rgba(22, 131, 155, 0.6) !important;
+}
+
+#delete .button:hover {
+  background-color: rgba(22, 131, 155, 0.22) !important;
+  border-color: rgba(11, 126, 152, 0.22) !important;
+}
+
+.deleteBox {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+.deleteBox:focus {
   box-shadow: none;
 }
 
-.blueBox::placeholder {
+.deleteBox::placeholder {
   color: #6c6c6c !important;
   font-family: Hack, monospace !important;
 }
