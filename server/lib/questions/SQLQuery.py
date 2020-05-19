@@ -8,7 +8,8 @@ class SQLQuery:
                 answer TEXT DEFAULT NULL,
                 approved INTEGER DEFAULT 1,
                 FOREIGN KEY (user) REFERENCES users (id),
-                FOREIGN KEY (question) REFERENCES questions (id)
+                FOREIGN KEY (question) REFERENCES questions (id),
+                UNIQUE(user, question)
             );
             """
 
@@ -74,9 +75,11 @@ class SQLQuery:
             """
         
         getSolvesSpecial = """
-            SELECT id, user, answer, approved
+            SELECT solves.id, solves.user, solves.answer, solves.approved, users.username
             FROM solves
-            WHERE question = ?
+            INNER JOIN users
+            ON users.id = solves.user
+            WHERE solves.question = ?
             ;
             """
     

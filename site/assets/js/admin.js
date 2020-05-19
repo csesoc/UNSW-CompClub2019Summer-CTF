@@ -444,7 +444,7 @@ function dataToRowSubmissions(data) {
   row.appendChild(deleteElem);
 
   submissionReveal.addEventListener("click", function() {
-    openModalViewSubmissions(data.id, data.title);
+    openModalViewSubmissions(data.id, data.title, solveCount);
   });
 
   editBtn.addEventListener("click", function(evt) {
@@ -816,15 +816,7 @@ function openModalDeleteSubmission(submission) {
   modal.classList.add("is-active");
 }
 
-
-
-
-
-
-
-
-
-function openModalViewSubmissions(questionId, title) {
+function openModalViewSubmissions(questionId, title, solves) {
   let modal = document.getElementById("viewModalSubmission");
   const titleSubmission = document.getElementById("title-submissions")
   titleSubmission.innerText = `Submissions for ${title}`;
@@ -843,7 +835,7 @@ function openModalViewSubmissions(questionId, title) {
       const row = document.createElement("tr");
 
       const user = document.createElement("td");
-      user.innerText = data[1];
+      user.innerText = data[4];
       row.appendChild(user);
 
       const submission = document.createElement("td");
@@ -868,17 +860,13 @@ function openModalViewSubmissions(questionId, title) {
       deleteElem.appendChild(deleteBtn);
       row.appendChild(deleteElem);
 
-      /*editBtn.addEventListener("click", function(evt) {
-        openModalEdit(data.id, this.parentElement.parentElement);
-      });*/
-
       if (data[3] === 1) {
         changeBtn.addEventListener("click", function() {
-          unapproveSolve(data[0], data[1], changeBtn);
+          unapproveSolve(data[0], data[4], changeBtn, change, solves);
         });
       } else if (data[3] === 0) {
         changeBtn.addEventListener("click", function() {
-          approveSolve(data[0], data[1], changeBtn);
+          approveSolve(data[0], data[4], changeBtn, change, solves);
         });
       }
 
@@ -1026,48 +1014,54 @@ function openModalDeleteQuestion(question) {
   modal.classList.add("is-active");
 }
 
-function approveSolve(solveId, username, button) {
+function approveSolve(solveId, username, button, parent, solves) {
   fetch("/api/questions/special/approve", {
     method: "post",
     credentials: "include",
     body: JSON.stringify({
       solve: solveId,
-      username: username.toString()
+      username: username
     })
   })
   .then(response => response.json())
   .then(jsonData => {
     if (jsonData.status) {
       button.innerText = 'unapprove';
-      button.removeEventListener("click", function() {
-        approveSolve(solveId, username, button);
+      solves.innerText = parseInt(solves.innerText) + 1;
+      newButton = button.cloneNode(true);
+      newButton.addEventListener("click", function() {
+        unapproveSolve(solveId, username, button, parent, solves);
       });
-      button.addEventListener("click", function() {
-        unapproveSolve(solveId, username, button);
-      });
+      while (parent.firstChild) {
+        parent.removeChild(parent.lastChild);
+      }
+      parent.appendChild(newButton);
     }
   })
 }
 
-function unapproveSolve(solveId, username, button) {
+function unapproveSolve(solveId, username, button, parent, solves) {
   fetch("/api/questions/special/unapprove", {
     method: "post",
     credentials: "include",
     body: JSON.stringify({
       solve: solveId,
-      username: username.toString()
+      username: username
     })
   })
   .then(response => response.json())
   .then(jsonData => {
     if (jsonData.status) {
       button.innerText = 'approve';
-      button.removeEventListener("click", function() {
-        unapproveSolve(solveId, username, button);
+      solves.innerText = parseInt(solves.innerText) - 1;
+      newButton = button.cloneNode(true);
+      newButton.addEventListener("click", function() {
+        approveSolve(solveId, username, button, parent, solves);
       });
-      button.addEventListener("click", function() {
-        approveSolve(solveId, username, button);
-      });
+      while (parent.firstChild) {
+        parent.removeChild(parent.lastChild);
+      }
+      parent.appendChild(newButton);
     }
   })
 }
