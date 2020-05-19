@@ -7,11 +7,16 @@
 ---
 ## Features
 The admin can create/edit:
-- categories
+- Categories
+
 All questions and submissions must be associated with a category.
-- questions
+
+- Questions
+
 Users can submit an answer. There can only be one correct answer for a question. It is not case sensitive.
-- submissions
+
+- Submissions
+
 Users can submit an entry for a submission. The admin can approve/unapprove submissions.
 
 Questions and submissions that have been approved are awarded points.
