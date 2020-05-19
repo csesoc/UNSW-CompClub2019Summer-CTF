@@ -5,7 +5,7 @@ Array.prototype.has = function(obj) {
 function openModalQuestion(questionData, srcElem) {
   let modal = document.getElementById("questionModal");
   modal.classList.toggle("solved", solves.has(questionData.id));
-
+  modal.classList.toggle("pending", pending.has(questionData.id));
   getSolves(questionData.id).then(jsonData => {
     if (jsonData.status) {
       modal.querySelector("[name=solves]").innerText = jsonData.data;
@@ -121,10 +121,17 @@ function reloadListener() {
 function openModalQuestionSpecial(questionData, srcElem) {
   let modal = document.getElementById("questionModalSpecial");
   modal.classList.toggle("solved", solves.has(questionData.id));
+  modal.classList.toggle("pending", pending.has(questionData.id));
 
   getSolves(questionData.id).then(jsonData => {
     if (jsonData.status) {
       modal.querySelector("[name=solves]").innerText = jsonData.data;
+    }
+  });
+
+  getPending(questionData.id).then(jsonData => {
+    if (jsonData.status) {
+      modal.querySelector("[name=pending]").innerText = jsonData.data;
     }
   });
 
@@ -192,6 +199,8 @@ function openModalQuestionSpecial(questionData, srcElem) {
     ).value.toString();
     modal.querySelector("[name=value]").classList.remove("solved");
     modal.classList.remove("solved");
+    modal.querySelector("[name=value]").classList.remove("pending");
+    modal.classList.remove("pending");
     answerSubmissionEnable();
 
     modal.querySelector("form").removeEventListener("submit", submitEvent);
@@ -258,6 +267,7 @@ function dataToTile(data) {
 function dataToTileSpecial(data) {
   let tile = document.createElement("article");
   tile.classList.toggle("solved", solves.has(data.id));
+  tile.classList.toggle("pending", pending.has(data.id));
   tile.classList.add("tile", "is-child", "notification", "is-3");
 
   let title = document.createElement("h1");
@@ -280,8 +290,8 @@ function dataToTileSpecial(data) {
   return tile;
 }
 
-Promise.all([getQuestions(), getCategories(), getSolves()]).then(
-  ([questionsData, categoriesData, solvesData]) => {
+Promise.all([getQuestions(), getCategories(), getSolves(), getPending()]).then(
+  ([questionsData, categoriesData, solvesData, pendingData]) => {
     if (categoriesData.status) {
       for (let data of categoriesData.data || []) {
         categories[data[0]] = data[1];
@@ -290,6 +300,10 @@ Promise.all([getQuestions(), getCategories(), getSolves()]).then(
 
     if (solvesData.status && solvesData.data) {
       solves = solvesData.data;
+    }
+
+    if (pendingData.status && pendingData.data) {
+      pending = pendingData.data;
     }
 
     if (questionsData.status) {

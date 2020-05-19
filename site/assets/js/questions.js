@@ -4,6 +4,7 @@ let submissions = {}
 let submissionsByCategory = {}
 let categories = {};
 let solves = [];
+let pending = [];
 let me = {};
 
 
@@ -76,6 +77,23 @@ function getSolves(questionId) {
   }
 
   return fetch("/api/questions/userSolves.json", {
+    method: "post",
+    credentials: "include"
+  }).then(response => response.json());
+}
+
+function getPending(questionId) {
+  if (questionId !== undefined) {
+    return fetch("/api/questions/questionPending.json", {
+      method: "post",
+      credentials: "include",
+      body: JSON.stringify({
+        question: questionId
+      })
+    }).then(response => response.json());
+  }
+
+  return fetch("/api/questions/userPending.json", {
     method: "post",
     credentials: "include"
   }).then(response => response.json());

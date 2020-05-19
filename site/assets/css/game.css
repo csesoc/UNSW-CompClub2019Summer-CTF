@@ -127,6 +127,14 @@
   flex-grow: 1;
 }
 
+#questionModalSpecial [name="pending"]:not(:empty)::before {
+  content: "pending: ";
+}
+
+#questionModalSpecial [name="pending"] {
+  flex-grow: 1;
+}
+
 #questionModalSpecial [name="category"]:not(:empty)::before {
   content: ": ";
 }

@@ -55,12 +55,20 @@ def adminSolves(self: RequestHandler, args: dict):
 def userSolves(self: RequestHandler, args: dict):
     return self.finish(JSON.data(questionsSQLMethod.questions.getSolves(user=self.current_user.id)))
 
+@routing.POST("/questions/userPending.json")
+@authenticated
+def userPending(self: RequestHandler, args: dict):
+    return self.finish(JSON.data(questionsSQLMethod.questions.getPending(user=self.current_user.id)))
 
 @routing.POST("/questions/questionSolves.json")
 @authenticated
 def questionSolves(self: RequestHandler, args: dict):
     return self.finish(JSON.data(len(questionsSQLMethod.questions.getSolves(question=args["question"]))))
 
+@routing.POST("/questions/questionPending.json")
+@authenticated
+def questionPending(self: RequestHandler, args: dict):
+    return self.finish(JSON.data(len(questionsSQLMethod.questions.getPending(question=args["question"]))))
 
 @routing.POST("/questions/userPoints.json")
 def userPoints(self: RequestHandler, args: dict):

@@ -52,7 +52,28 @@ class SQLQuery:
             WHERE question = ? AND approved = 1
             ;
             """
-        
+
+        getAllPending = """
+            SELECT user, question
+            FROM solves
+            WHERE approved = 1
+            ;
+            """
+
+        getUserPending = """
+            SELECT question
+            FROM solves
+            WHERE user = ? AND approved = 0
+            ;
+            """
+
+        getQuestionPending = """
+            SELECT user
+            FROM solves
+            WHERE question = ? AND approved = 0
+            ;
+            """
+
         approve = """
             UPDATE solves
             SET approved = 1

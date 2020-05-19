@@ -93,6 +93,15 @@ class SQLMethod:
                 return database.fetchAll(SQLQuery.solves.getAll)
 
         @staticmethod
+        def getPending(*, user: int = None, question: int = None):
+            if user:
+                return list(map(lambda result: result[0], database.fetchAll(SQLQuery.solves.getUserPending, (user,))))
+            elif question:
+                return list(map(lambda result: result[0], database.fetchAll(SQLQuery.solves.getQuestionPending, (question,))))
+            else:
+                return database.fetchAll(SQLQuery.solves.getAllPending)
+
+        @staticmethod
         def getQuestions(*, question: int = None, answer: bool = False):
             if question:
                 if answer:
