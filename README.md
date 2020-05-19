@@ -5,6 +5,32 @@
 [Original repo](https://github.com/featherbear/UNSW-CompClub2019Summer-CTF)
 
 ---
+## Features
+The admin can create/edit:
+- categories
+All questions and submissions must be associated with a category.
+- questions
+Users can submit an answer. There can only be one correct answer for a question. It is not case sensitive.
+- submissions
+Users can submit an entry for a submission. The admin can approve/unapprove submissions.
+
+Questions and submissions that have been approved are awarded points.
+
+The admin can view a user's username, points and solves. They can also delete a user.
+Users can be viewed sorted by:
+- Username (Descending)
+- Username (Ascending)
+- Points (Descending)
+- Points (Ascending)
+- Solves (Descending)
+- Solves (Ascending)
+
+Both users and the admin can view the leaderboard where users are ranked by points. The admin is not on the leaderboard.
+
+Solved questions and submissions (submissions that have been approved by the admin) appear green to users.
+
+Pending submissions (submissions that have not been approved by the admin) appear yellow to users.
+
 ## Installation
 A [_requirements.txt_](server/requirements.txt) file is located in the _server_ folder  
 `python3 -m pip install -r requirements.txt`
