@@ -841,17 +841,13 @@ function openModalViewSubmissions(questionId, title, solves, pending) {
   })
   .then(response => response.json())
   .then(jsonData => {
-    body.innerText = "";
+    body.innerHtml = "";
     for (let data of jsonData.data || []) {
       const row = document.createElement("tr");
 
       const user = document.createElement("td");
       user.innerText = data[4];
       row.appendChild(user);
-
-      const submission = document.createElement("td");
-      submission.innerText = data[2];
-      row.appendChild(submission);
 
       let change = document.createElement("td");
       let changeBtn = document.createElement("button");
@@ -870,6 +866,10 @@ function openModalViewSubmissions(questionId, title, solves, pending) {
       deleteBtn.classList.add("button", "is-outlined", "is-info");
       deleteElem.appendChild(deleteBtn);
       row.appendChild(deleteElem);
+
+      const submission = document.createElement("td");
+      submission.innerText = data[2];
+      row.appendChild(submission);
 
       if (data[3] === 1) {
         changeBtn.addEventListener("click", function() {
