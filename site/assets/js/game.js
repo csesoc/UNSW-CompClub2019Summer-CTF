@@ -207,6 +207,11 @@ function openModalQuestionSpecial(questionData, srcElem) {
         if (deleteElem.classList.contains("hide")) {
           deleteElem.classList.remove("hide");
         }
+
+        deleteElem.addEventListener("click", function() {
+          modal.classList.remove("is-active");
+          openDeleteSubmission(me.id, questionData.id, questionData.title, modal);
+        });
       }
     });
   };

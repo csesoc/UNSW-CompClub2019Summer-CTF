@@ -56,7 +56,7 @@ class SQLQuery:
         getAllPending = """
             SELECT user, question
             FROM solves
-            WHERE approved = 1
+            WHERE approved = 0
             ;
             """
 

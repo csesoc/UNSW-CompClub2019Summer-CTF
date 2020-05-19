@@ -66,7 +66,7 @@ function getSolvesAdmin() {
 }
 
 function getPendingAdmin() {
-  return fetch("/api/questions/pendingSolves.json", {
+  return fetch("/api/questions/adminPending.json", {
     method: "post",
     credentials: "include"
   }).then(response => response.json());
