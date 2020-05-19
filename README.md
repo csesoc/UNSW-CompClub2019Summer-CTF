@@ -41,7 +41,8 @@ python3 -m pip install -r requirements.txt
 python3 server.py
 ```
 
-The following assumes the server will run over HTTPS. It also assumes that you have installed a HTTPS certificate at the following locations:
+## HTTP v HTTPS
+The following assumes the server will run over HTTPS. Change ```scavhunt.tech``` to the appropriate domain. It also assumes that you have installed a HTTPS certificate at the following locations:
 ```
 /etc/letsencrypt/live/scavhunt.tech/fullchain.pem
 /etc/letsencrypt/live/scavhunt.tech/privkey.pem
@@ -49,7 +50,7 @@ The following assumes the server will run over HTTPS. It also assumes that you h
 
 If this is not the case, the server will instead try to run over HTTP.
 
-Do the following to get HTTPS certificates. Change ```scavhunt.tech``` to the appropriate domain.
+To get HTTPS certificates, type the following on the server:
 ```bash
 sudo apt-get update
 sudo apt-get install software-properties-common
@@ -60,7 +61,7 @@ sudo apt-get install certbot
 sudo certbot certonly --standalone
 ```
 
-To autorenew, add the following into crontab
+To autorenew, add the following into crontab:
 ```bash
 0 0 1 * * sudo apt-get update && sudo apt-get upgrade && sudo apt autoremove
 0 0 1 * * sudo certbot renew
