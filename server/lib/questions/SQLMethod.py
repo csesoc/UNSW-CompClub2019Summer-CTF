@@ -17,6 +17,10 @@ class SQLMethod:
         def getQuestionsBoth():
             return database.fetchAll(SQLQuery.questions.getAllBoth)
 
+        @staticmethod
+        def deleteSpecific(user: int, question: int):
+            return database.update(SQLQuery.solves.deleteSpecific, (user, question))
+
         # Admin functions
         @staticmethod
         def deleteSolve(solve: int):

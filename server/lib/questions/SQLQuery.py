@@ -28,7 +28,7 @@ class SQLQuery:
 
         deleteSpecific = """
             DELETE FROM solves
-            WHERE id = ?
+            WHERE user = ? AND question = ?
             ;
             """
 

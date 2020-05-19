@@ -232,7 +232,7 @@ function openModalQuestionSpecial(questionData, srcElem) {
 
     deleteElem.addEventListener("click", function() {
       modal.classList.remove("is-active");
-      openDeleteSubmission(questionData.id, questionData.title, modal);
+      openDeleteSubmission(me.id, questionData.id, questionData.title, modal);
     });
 
   } else {
@@ -412,7 +412,7 @@ Promise.all([getQuestions(), getCategories(), getSolves(), getPending()]).then(
   }
 );
 
-function openDeleteSubmission(submission, title, parent) {
+function openDeleteSubmission(userId, submission, title, parent) {
   let modal = document.getElementById("deleteSubmission");
 
   const text = document.getElementById("delete-submission-text");
@@ -424,10 +424,11 @@ function openDeleteSubmission(submission, title, parent) {
       .removeEventListener("click", confirmEvent);
     this.classList.add("is-loading");
 
-    /*fetch("/api/questions/question/delete", {
+    fetch("/api/questions/special/deleteOwn", {
       method: "post",
       credentials: "include",
       body: JSON.stringify({
+        user: userId,
         question: submission
       })
     })
@@ -438,12 +439,7 @@ function openDeleteSubmission(submission, title, parent) {
           .querySelector("button.confirm")
           .addEventListener("click", confirmEvent);
         location.reload();
-      });*/
-      this.classList.remove("is-loading");
-        modal
-          .querySelector("button.confirm")
-          .addEventListener("click", confirmEvent);
-        location.reload();
+      });
   };
 
   const closeModal = function() {

@@ -89,7 +89,6 @@ def userPoints(self: RequestHandler, args: dict):
     
     return self.finish(JSON.data(points))
 
-
 @routing.POST("/questions/solve")
 @authenticated
 def trySolve(self: RequestHandler, args: dict):
@@ -111,3 +110,14 @@ def submitSpecial(self: RequestHandler, args: dict):
     except IntegrityError:
         pass
     return self.finish(JSON.YES())
+
+@routing.POST("/questions/special/deleteOwn")
+@authenticated
+def questionsSpecialDelete(self: RequestHandler, args: dict):
+    if self.current_user.id != args["user"]:
+        return self.finish(JSON.error("access denied"))
+
+    result = questionsSQLMethod.questions.deleteSpecific(**args)
+    if result:
+        return self.finish(JSON.OK())
+    return self.finish(JSON.FALSE())
