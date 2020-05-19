@@ -54,8 +54,6 @@ function openModalQuestion(questionData, srcElem) {
       modal.querySelector("form").addEventListener("submit", submitEvent);
 
       if (jsonData.status) {
-        modal.querySelector("[name=answer]").placeholder = "answer correct";
-        modal.querySelector("[name=answer]").value = "";
         if (!solves.has(questionData.id)) {
           solves.push(questionData.id);
           modal.querySelector("[name=solves]").innerText =
@@ -63,7 +61,13 @@ function openModalQuestion(questionData, srcElem) {
           updateLeaderboard();
           }
         modal.querySelector("[name=value]").classList.add("solved");
+        modal.classList.add("solved");
         srcElem.classList.add("solved");
+        const form = modal.querySelector("form");
+        if (!form.classList.contains("hide")) {
+          form.classList.add("hide");
+        }
+  
       } else {
         modal.querySelector("[name=answer]").placeholder =
           answerValue + " was not right!";
@@ -193,7 +197,16 @@ function openModalQuestionSpecial(questionData, srcElem) {
         modal.querySelector("[name=pending]").innerText =
           parseInt(modal.querySelector("[name=pending]").innerText) + 1;
         modal.querySelector("[name=value]").classList.add("pending");
+        modal.classList.add("pending");
         srcElem.classList.add("pending");
+        const form = modal.querySelector("form");
+        if (!form.classList.contains("hide")) {
+          form.classList.add("hide");
+        }
+        const deleteElem = document.getElementById("delete");
+        if (deleteElem.classList.contains("hide")) {
+          deleteElem.classList.remove("hide");
+        }
       }
     });
   };

@@ -129,6 +129,10 @@ form .button:hover,
   border-color: rgba(11, 126, 152, 0.22) !important;
 }
 
+.blueBox:focus {
+  box-shadow: none;
+}
+
 #delete .button {
   color: white !important;
   background-color: transparent;
