@@ -21,6 +21,7 @@ Users can submit an entry for a submission. The admin can approve/unapprove subm
 
 Questions and submissions that have been approved are awarded points.
 
+
 The admin can view a user's username, points and solves. They can also delete a user.
 Users can be viewed sorted by:
 - Username (Descending)
@@ -29,6 +30,7 @@ Users can be viewed sorted by:
 - Points (Ascending)
 - Solves (Descending)
 - Solves (Ascending)
+
 
 Both users and the admin can view the leaderboard where users are ranked by points. The admin is not on the leaderboard.
 
