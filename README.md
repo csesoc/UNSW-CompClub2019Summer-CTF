@@ -7,20 +7,13 @@
 ---
 ## Features
 The admin can create/edit:
-- Categories
+- Categories - All questions and submissions must be associated with a category.
 
-All questions and submissions must be associated with a category.
+- Questions - Users can submit an answer for a question. There can only be one correct answer for a question. It is not case sensitive.
 
-- Questions
-
-Users can submit an answer. There can only be one correct answer for a question. It is not case sensitive.
-
-- Submissions
-
-Users can submit an entry for a submission. The admin can approve/unapprove submissions.
+- Submissions - Users can submit an entry for a submission. The admin can approve/unapprove submissions.
 
 Questions and submissions that have been approved are awarded points.
-
 
 The admin can view a user's username, points and solves. They can also delete a user.
 Users can be viewed sorted by:
@@ -30,7 +23,6 @@ Users can be viewed sorted by:
 - Points (Ascending)
 - Solves (Descending)
 - Solves (Ascending)
-
 
 Both users and the admin can view the leaderboard where users are ranked by points. The admin is not on the leaderboard.
 
