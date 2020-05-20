@@ -841,7 +841,9 @@ function openModalViewSubmissions(questionId, title, solves, pending) {
   })
   .then(response => response.json())
   .then(jsonData => {
-    body.innerText = "";
+    while(body.firstChild) {
+      body.removeChild(lastChild);
+    }
     for (let data of jsonData.data || []) {
       const row = document.createElement("tr");
 
