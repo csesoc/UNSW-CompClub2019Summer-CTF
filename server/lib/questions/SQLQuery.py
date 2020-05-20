@@ -2,7 +2,7 @@ class SQLQuery:
     class solves:
         createTable = """
             CREATE TABLE IF NOT EXISTS solves (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 user INTEGER NOT NULL,
                 question INTEGER NOT NULL,
                 answer TEXT DEFAULT NULL,
@@ -113,7 +113,7 @@ class SQLQuery:
     class questions:
         createTable = """
             CREATE TABLE IF NOT EXISTS questions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 title TEXT NOT NULL,
                 description TEXT,
                 answer TEXT DEFAULT NULL,
@@ -229,7 +229,7 @@ class SQLQuery:
     class categories:
         createTable = """
             CREATE TABLE IF NOT EXISTS categories (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 category TEXT NOT NULL,
                 UNIQUE (category)
             );

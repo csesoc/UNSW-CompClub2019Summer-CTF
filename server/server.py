@@ -1,4 +1,4 @@
-__VERSION = "0.1.1"
+__VERSION = "0.2.0"
 
 import tornado.ioloop
 import tornado.web
