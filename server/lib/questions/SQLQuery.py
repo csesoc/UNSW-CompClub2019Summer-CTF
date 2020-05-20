@@ -31,6 +31,12 @@ class SQLQuery:
             WHERE user = ? AND question = ?
             ;
             """
+        
+        deleteSpecificAdmin = """
+            DELETE FROM solves
+            WHERE id = ?
+            ;
+            """
 
         getAll = """
             SELECT user, question

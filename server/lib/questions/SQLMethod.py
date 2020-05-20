@@ -24,7 +24,7 @@ class SQLMethod:
         # Admin functions
         @staticmethod
         def deleteSolve(solve: int):
-            return database.update(SQLQuery.solves.deleteSpecific, (solve,))
+            return database.update(SQLQuery.solves.deleteSpecificAdmin, (solve,))
 
         @staticmethod
         def createQuestion(title: str, description: str, answer: str, value: int, category: int):

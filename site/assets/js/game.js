@@ -69,7 +69,6 @@ function openModalQuestion(questionData, srcElem) {
         }
   
       } else {
-        console.log("placeholder");
         modal.querySelector("[name=answer]").placeholder =
           answerValue + " was not right!";
         modal.querySelector("[name=answer]").value = "";
