@@ -100,6 +100,16 @@ This was originally created by Andrew Wong for the CSESoc Compclub 2019 Summer C
 
 It has been modified by Michael Gribben for CSESoc's Scavhunt.
 
+## Todo
+- Admin scroll
+- Update user view when submission apporved
+- Update admin view of users dynamically
+- Score on hover
+- Admin accounts
+- Fix mobile view (login)
+- Same account question sync
+- Sanitise spaces
+
 ### Server (Python)
 [`Jinja2`](http://jinja.pocoo.org) - _Version 2.10.1_  
 [`tornado`](//www.tornadoweb.org) - _Version 5.1.1_
