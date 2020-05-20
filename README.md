@@ -93,13 +93,6 @@ username = admin        # Superuser username
 password = password     # Superuser password
 ```
 
----
-## Credits
-
-This was originally created by Andrew Wong for the CSESoc Compclub 2019 Summer CTF.
-
-It has been modified by Michael Gribben for CSESoc's Scavhunt.
-
 ## Todo
 - Admin scroll
 - Update user view when submission apporved
@@ -109,6 +102,13 @@ It has been modified by Michael Gribben for CSESoc's Scavhunt.
 - Fix mobile view (login)
 - Same account question sync
 - Sanitise spaces
+
+---
+## Credits
+
+This was originally created by Andrew Wong for the CSESoc Compclub 2019 Summer CTF.
+
+It has been modified by Michael Gribben for CSESoc's Scavhunt.
 
 ### Server (Python)
 [`Jinja2`](http://jinja.pocoo.org) - _Version 2.10.1_  
