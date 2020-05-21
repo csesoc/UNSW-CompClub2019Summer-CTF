@@ -56,6 +56,10 @@
 
       }
 
+      .hide-logo {
+        display: none !important;
+      }
+
       .is-vertical-center {
         display: flex;
         align-items: center;
@@ -206,7 +210,8 @@
     <div class="container is-vertical-center b-wrap has-text-centered">
       <div class="content">
         <img
-          class="logo-csesoc"
+          name="logo-thing"
+          class="logo-csesoc hide-logo"
           src="/assets/img/csesocwhiteblue.png"
           style="margin-top: -10vh"
         />
@@ -485,6 +490,7 @@
       })();
 
       function showAuthType() {
+        document.querySelector("[name=logo-thing]").classList.remove("hide-logo");
         var elem = document.querySelector(".section[name=auth-type]");
         elem.classList.remove("hide");
       }
