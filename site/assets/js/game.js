@@ -3,7 +3,7 @@ Array.prototype.has = function(obj) {
 };
 
 function openModalQuestion(questionData, srcElem) {
-  let modal = document.getElementById("questionModal");
+  let modal = document.getElementById("questionModalSpecial");
   modal.classList.toggle("solved", solves.has(questionData.id));
   modal.classList.toggle("pending", pending.has(questionData.id));
   getSolves(questionData.id).then(jsonData => {
@@ -108,6 +108,16 @@ function openModalQuestion(questionData, srcElem) {
 
   const cancelEvent = closeModal;
 
+  const deleteElem = document.getElementById("delete");
+  if (!deleteElem.classList.contains("hide")) {
+    deleteElem.classList.add("hide");
+  }
+
+  const pendingElem = document.getElementById("pending");
+  if (!pendingElem.classList.contains("hide")) {
+    pendingElem.classList.add("hide");
+  }
+
   modal.querySelector("[name=value]").innerText = questionData.value.toString();
 
   modal.querySelector("form").addEventListener("submit", submitEvent);
@@ -119,7 +129,7 @@ function openModalQuestion(questionData, srcElem) {
 }
 
 function reloadListener() {
-  let modal = document.getElementById("questionModal");
+  let modal = document.getElementById("questionModalSpecial");
   if (modal.classList.contains("active")) {
     modal
       .querySelector("button.cancel")
@@ -271,6 +281,11 @@ function openModalQuestionSpecial(questionData, srcElem) {
   };
 
   const cancelEvent = closeModal;
+
+  const pendingElem = document.getElementById("pending");
+  if (pendingElem.classList.contains("hide")) {
+    pendingElem.classList.remove("hide");
+  }
 
   modal.querySelector("[name=value]").innerText = questionData.value.toString();
 
